@@ -35,7 +35,7 @@ This project uses **GitHub Actions** to automatically verify code quality and bu
 
 ### CI Status Screenshot
 > **[INSTRUCTIONS: Replace the placeholder below with your actual screenshot!]**
-![GitHub Action Green Checkmark](PASTE_YOUR_LINK_OR_IMAGE_PATH_HERE)
+![GitHub Action Green Checkmark](https://media.discordapp.net/attachments/1401842449650946118/1488433565376057455/Screenshot_2026-03-31_090055.png?ex=69ccc347&is=69cb71c7&hm=7e8472287f9248e8eaa3b39fd61dd81536f7b9242d4e7ecea20b05a61c9a6900&=&format=webp&quality=lossless)
 
 ---
 
