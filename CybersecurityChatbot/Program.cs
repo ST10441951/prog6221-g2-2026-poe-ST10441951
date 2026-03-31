@@ -7,89 +7,93 @@ namespace CybersecurityChatbot
     {
         static void Main(string[] args)
         {
-            // Initialize our helper classes
             BotInterface ui = new BotInterface();
             List<ChatbotResponse> knowledgeBase = new List<ChatbotResponse>();
 
-            // --- TASK 4: BASIC RESPONSE SYSTEM ---
+            // TASK 4: Knowledge Base with SA Context
+            knowledgeBase.Add(new ChatbotResponse("passwords", "Use 12+ characters with symbols. In SA, never share your banking OTP over the phone!"));
+            knowledgeBase.Add(new ChatbotResponse("phishing", "Fake emails often mimic SARS or local banks. Check the sender's address carefully."));
+            knowledgeBase.Add(new ChatbotResponse("browsing", "Ensure 'https' is present. Avoid public Wi-Fi for FNB, Capitec, or Standard Bank apps."));
+            knowledgeBase.Add(new ChatbotResponse("how are you", "I am optimized and ready to protect South African citizens!"));
+            knowledgeBase.Add(new ChatbotResponse("purpose", "To increase cybersecurity literacy and prevent identity theft in our local communities."));
+            knowledgeBase.Add(new ChatbotResponse("saps", "Report cybercrimes to your nearest SAPS station or the Cybersecurity Hub at cybersecurityhub.gov.za."));
 
-            // 1. Cybersecurity Topics (Required)
-            knowledgeBase.Add(new ChatbotResponse("passwords", "Safe passwords should be at least 12 characters long and include symbols like @ or #. Never reuse the same password for different accounts!"));
-            knowledgeBase.Add(new ChatbotResponse("phishing", "Phishing is a scam where attackers send fake emails to steal your banking PIN or login details. Never click suspicious links!"));
-            knowledgeBase.Add(new ChatbotResponse("browsing", "For safe browsing, always look for the padlock icon (HTTPS) in the URL bar and avoid using public Wi-Fi for sensitive tasks like banking."));
-
-            // 2. Personality & Purpose Questions (Required)
-            knowledgeBase.Add(new ChatbotResponse("how are you", "I am functioning perfectly and ready to help you secure your digital life!"));
-            knowledgeBase.Add(new ChatbotResponse("purpose", "My purpose is to educate South African citizens on identifying and mitigating cyber threats to prevent financial loss and identity theft."));
-            knowledgeBase.Add(new ChatbotResponse("ask", "You can ask me about password safety, phishing, safe browsing, or even my purpose!"));
-
-            // --- START THE PROGRAM ---
-
-            // 1. Voice Greeting (Task 1)
+            ui.DisplayAsciiArt();
             ui.PlayVoiceGreeting();
 
-            // 2. ASCII Image (Task 2)
-            ui.DisplayAsciiArt();
-
-            // 3. User Interaction - Personalization (Task 3)
-            ui.TypeMessage("Hello! Welcome to the Cybersecurity Awareness Bot.");
-            Console.Write("What is your name? ");
-            string userName = Console.ReadLine();
-
-            // TASK 5: Basic Input Validation (Empty name)
-            if (string.IsNullOrWhiteSpace(userName))
+            // TASK 5: Robust Name Validation
+            string userName = "";
+            while (string.IsNullOrWhiteSpace(userName))
             {
-                userName = "Friend";
+                ui.TypeMessage("System Online. I am your SA Cyber-Shield Assistant, dedicated to protecting our citizens from digital threats.");
+                ui.TypeMessage("Before we secure your connection, may I ask who I am speaking with?");
+                Console.Write("Name: ");
+                userName = Console.ReadLine()?.Trim();
+                if (string.IsNullOrWhiteSpace(userName))
+                {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Error: Name cannot be empty. Please identify yourself.");
+                    Console.ResetColor();
+                }
             }
 
-            ui.TypeMessage("\nNice to meet you, " + userName + "!");
-            ui.TypeMessage("I am here to help South Africans stay safe online.");
+            ui.TypeMessage($"\nWelcome, {userName}. I am your Cybersecurity Awareness Assistant.");
 
             bool keepRunning = true;
             while (keepRunning)
             {
                 ui.ShowHeader("Main Menu");
-                ui.TypeMessage("How can I help you? (Type: Passwords, Phishing, Browsing, Purpose, or Exit)");
+                ui.TypeMessage("Ask about: Passwords, Phishing, Browsing, SAPS, or type 'Help'. (Type 'Exit' to quit)");
 
-                // TASK 6: Visual Indicator for User Input
                 Console.ForegroundColor = ConsoleColor.Green;
-                Console.Write("> ");
-                string input = Console.ReadLine().ToLower().Trim();
+                Console.Write($"{userName} > ");
+                string input = Console.ReadLine()?.ToLower().Trim();
                 Console.ResetColor();
 
                 if (input == "exit" || input == "quit")
                 {
-                    ui.TypeMessage("Stay safe online, " + userName + "! Goodbye.");
+                    ui.TypeMessage($"Goodbye {userName}. Stay vigilant and stay safe online.");
                     keepRunning = false;
+                }
+                else if (input == "help")
+                {
+                    ui.ShowHeader("Assistant Help");
+                    ui.TypeMessage("I can recognize keywords. Try asking: 'Tell me about phishing' or 'What is the SAPS contact?'");
                 }
                 else if (string.IsNullOrWhiteSpace(input))
                 {
-                    // TASK 5: Handle Empty Input
                     Console.ForegroundColor = ConsoleColor.Red;
-                    ui.TypeMessage("It looks like you didn't type anything. Please ask me a question!");
+                    ui.TypeMessage("Input detected as null. Please provide a query.");
                     Console.ResetColor();
                 }
                 else
                 {
-                    // Search knowledge base
                     bool found = false;
+
+                    /*
+                     www.w3schools.com. (2026). C# Foreach Loop. 
+                     [Online] Available at: https://www.w3schools.com/cs/cs_foreach_loop.php.
+                     */
+
                     foreach (var item in knowledgeBase)
                     {
-                        // Using .Contains allows the bot to understand full sentences
                         if (input.Contains(item.Topic))
                         {
                             ui.ShowHeader("Cybersecurity Insight");
+
+                            
+                            ui.TypeBridge(userName);
+
                             ui.TypeMessage(item.Information);
                             found = true;
                             break;
                         }
                     }
 
-                    // TASK 5: Default Response for unknown/unsupported queries
                     if (!found)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        ui.TypeMessage("I didn't quite understand that. Could you rephrase? Try asking about 'phishing' or 'my purpose'!");
+                        ui.TypeMessage("I am sorry, my database does not contain that specific information. Try asking about 'passwords' or 'phishing'.");
                         Console.ResetColor();
                     }
                 }
