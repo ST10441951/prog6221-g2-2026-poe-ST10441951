@@ -11,11 +11,23 @@ namespace CybersecurityChatbot
             List<ChatbotResponse> knowledgeBase = new List<ChatbotResponse>();
 
             // TASK 4: Knowledge Base with SA Context
-            knowledgeBase.Add(new ChatbotResponse("passwords", "Use 12+ characters with symbols. In SA, never share your banking OTP over the phone!"));
-            knowledgeBase.Add(new ChatbotResponse("phishing", "Fake emails often mimic SARS or local banks. Check the sender's address carefully."));
-            knowledgeBase.Add(new ChatbotResponse("browsing", "Ensure 'https' is present. Avoid public Wi-Fi for FNB, Capitec, or Standard Bank apps."));
+            knowledgeBase.Add(new ChatbotResponse("passwords", "A password is a secret string of characters including letters, numbers, and symbols " +
+                "used to authenticate a user's identity and authorize access to digital devices, " +
+                "accounts, or secure information. It acts as a digital key, intended only for the authorized user to ensure data security."));
+
+            knowledgeBase.Add(new ChatbotResponse("phishing", "Fake emails often mimic SARS or local banks. Check the sender's address carefully. " +
+                "It is the fraudulent practice of sending emails or other messages purporting to be from reputable " +
+                "companies in order to induce individuals to reveal personal information, such as passwords and credit card numbers."));
+
+            knowledgeBase.Add(new ChatbotResponse("browsing", "Ensure 'https' is present. Avoid public Wi-Fi for FNB, Capitec, or Standard Bank apps. " +
+                "Browsing means looking through items, information, or websites in a casual, leisurely manner without " +
+                "a specific goal, or scanning through text for key points. It often refers to exploring internet content (web browsing), scanning books, " +
+                "or window shopping, with synonyms including scanning, surfing, skimming, browsing, or examining. "));
+
             knowledgeBase.Add(new ChatbotResponse("how are you", "I am optimized and ready to protect South African citizens!"));
+
             knowledgeBase.Add(new ChatbotResponse("purpose", "To increase cybersecurity literacy and prevent identity theft in our local communities."));
+
             knowledgeBase.Add(new ChatbotResponse("saps", "Report cybercrimes to your nearest SAPS station or the Cybersecurity Hub at cybersecurityhub.gov.za."));
 
             ui.DisplayAsciiArt();
