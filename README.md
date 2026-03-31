@@ -1,7 +1,7 @@
 # Cybersecurity Awareness Chatbot (South Africa)
 **Course:** PROG6221 - Portfolio of Evidence (Part 1)  
-**Student Name:** [Your Name]  
-**Student Number:** [Your Student Number]  
+**Student Name:** Joshua Marc Lourens  
+**Student Number:** ST10441951
 
 ---
 
