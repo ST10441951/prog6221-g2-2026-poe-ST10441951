@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Media;
 
 namespace CybersecurityChatbot
 {
@@ -11,41 +12,47 @@ namespace CybersecurityChatbot
         {
             try
             {
-                // PLACEHOLDER: Ensure your file is named 'greeting.wav' and is in the output folder
-                // SoundPlayer player = new SoundPlayer("greeting.wav");
-                // player.PlaySync(); 
+                string audioPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "greeting.wav");
+
+                SoundPlayer player = new SoundPlayer(audioPath);
+                player.Play();
                 Console.WriteLine("[System: Voice greeting playing...]");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Audio file not found. Skipping voice greeting.");
+                Console.WriteLine("Audio error: " + ex.Message);
             }
         }
 
         // TASK 2: ASCII Image Display
         public void DisplayAsciiArt()
         {
-            // TASK 6: Enhanced UI - Dynamic Border
-            string topBorder = new string('*', 40);
-            string bottomBorder = new string('*', 40);
+            // TASK 6: Enhanced UI - Create a dynamic border
+            string border = new string('=', 50);
 
-            // CHANGE COLOUR
+            // TASK 6: Colour Formatting - Cyan/LightBlue for a "Tech" look
             Console.ForegroundColor = ConsoleColor.Cyan;
 
-            Console.WriteLine(topBorder);
+            Console.WriteLine(border);
 
-            
-            Console.WriteLine("      [ CYBER-AWARE SA BOT ]            ");
-            Console.WriteLine("          _      _                      ");
-            Console.WriteLine("         ( )____( )                     ");
-            Console.WriteLine("          |      |                      ");
-            Console.WriteLine("          |______|                      ");
+            // TASK 2: Friendly Computer Face Logo
+            // Using @ (Verbatim String) to handle the backslashes correctly
+            Console.WriteLine(@"                _________________");
+            Console.WriteLine(@"               |  ___________  | ");
+            Console.WriteLine(@"               | |  ^     ^  | | ");
+            Console.WriteLine(@"               | |     -     | | ");
+            Console.WriteLine(@"               | |___________| | ");
+            Console.WriteLine(@"               |_______________| ");
+            Console.WriteLine(@"               _____|_____|_____ ");
+            Console.WriteLine(@"              (_________________)");
+            Console.WriteLine(@"                                 ");
+            Console.WriteLine(@"          [ CYBER-AWARE ASSISTANT ]");
 
-            Console.WriteLine(bottomBorder);
+            Console.WriteLine(border);
 
-            
+            // Always reset color so the user's input isn't Cyan
             Console.ResetColor();
-            Console.WriteLine(); 
+            Console.WriteLine();
         }
 
         // TASK 6: Typing Effect
