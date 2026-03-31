@@ -2,6 +2,8 @@
 **Course:** PROG6221 - Portfolio of Evidence (Part 1)  
 **Student Name:** Joshua Marc Lourens  
 **Student Number:** ST10441951
+**YouTube Link:** https://youtu.be/s2OAJbJfyU8?si=X1BKIUUdW83CcdI4
+**GitHub Link:** 
 
 ---
 
