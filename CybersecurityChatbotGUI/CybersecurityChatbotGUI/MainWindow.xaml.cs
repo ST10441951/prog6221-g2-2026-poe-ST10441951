@@ -112,6 +112,7 @@ namespace CybersecurityChatbotGUI
         }
 
         /* Core GUI interaction loop. Handles the input processing pipeline, session states, and message distribution routines.
+        Integrated keyword detection logic to fulfill the interest-storage requirement for Task 5.
         
         References:
         Troelsen, A. and Japikse, P. (2021). Pro C# 9 with .NET 5: Foundational Principles and Practices. 10th ed. New York: Apress.
@@ -120,19 +121,33 @@ namespace CybersecurityChatbotGUI
         {
             if (_isTypingAnimationActive) return;
 
-            string inputTextContent = UserInputBox.Text.Trim();
-            if (string.IsNullOrWhiteSpace(inputTextContent)) return;
+            string rawInputText = UserInputBox.Text.Trim();
+            if (string.IsNullOrWhiteSpace(rawInputText)) return;
 
             UserInputBox.Clear();
 
             /* Log user message item node inside our collection array layer */
-            MessageHistory.Add(new ChatMessage { IsBot = false, Text = inputTextContent });
+            MessageHistory.Add(new ChatMessage { IsBot = false, Text = rawInputText });
             ChatScroller.ScrollToEnd();
+
+            string lowerInput = rawInputText.ToLower();
+
+            /* Task 5: Memory Acquisition Logic.
+            If the user hasn't declared an interest yet, we check the input for core cybersecurity keywords 
+            to personalize the conversation dynamically. */
+            if (string.IsNullOrEmpty(_engine.Session.FavoriteTopic))
+            {
+                if (lowerInput.Contains("password")) _engine.Session.FavoriteTopic = "passwords";
+                else if (lowerInput.Contains("scam")) _engine.Session.FavoriteTopic = "scams";
+                else if (lowerInput.Contains("privacy")) _engine.Session.FavoriteTopic = "privacy";
+                else if (lowerInput.Contains("phishing")) _engine.Session.FavoriteTopic = "phishing";
+                else if (lowerInput.Contains("malware")) _engine.Session.FavoriteTopic = "malware";
+            }
 
             /* Step 1: Initial user handshake name acquisition check sequence loop */
             if (!_engine.Session.IsGreetingComplete)
             {
-                _engine.Session.UserName = FormatName(inputTextContent);
+                _engine.Session.UserName = FormatName(rawInputText);
                 _engine.Session.IsGreetingComplete = true;
 
                 string personalizedIntroString = $"Welcome, {_engine.Session.UserName}! Great to meet you. " +
@@ -146,25 +161,17 @@ namespace CybersecurityChatbotGUI
             }
 
             /* Step 2: Route core questions to backend processing blocks */
-            string internalEngineResultResponse = _engine.ProcessUserInput(inputTextContent);
+            string internalEngineResultResponse = _engine.ProcessUserInput(rawInputText);
             await StreamTypewriterBotOutputAsync(internalEngineResultResponse);
         }
 
-        /* Routes the mouse click event context into the submission pipeline logic safely using async/await standard patterns.
-        
-        References:
-        Microsoft (2023). ButtonBase.OnClick Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.primitives.buttonbase.onclick
-        */
+        /* Routes the mouse click event context into the submission pipeline logic safely using async/await standard patterns. */
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
             await HandleUserSubmissionAsync();
         }
 
-        /* Captures physical physical keyboard inputs to detect and handle enter submission events safely using async/await standard patterns.
-        
-        References:
-        Microsoft (2023). UIElement.KeyDown Event. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.uielement.keydown
-        */
+        /* Captures physical physical keyboard inputs to detect and handle enter submission events safely using async/await standard patterns. */
         private async void UserInputBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -186,7 +193,6 @@ namespace CybersecurityChatbotGUI
         }
 
         /* Advanced punctuation aware typewriter streaming implementation logic.
-        Appends single characters into the notification model tracking targets while tracking timing changes to emulate real conversational flows.
         
         References:
         Microsoft (2023). Asynchronous programming with async and await. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
@@ -218,11 +224,7 @@ namespace CybersecurityChatbotGUI
         }
 
         /* Automated parsing adapter routing click events fired by quick navigation chips or cards directly into processing channels.
-        Cleans contextual labels to isolate relevant search keywords before driving the input box. Handles both regular spaces and non-breaking space symbols safely.
-        
-        References:
-        Microsoft (2023). RoutedEventArgs Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.routedeventargs
-        */
+        Cleans contextual labels to isolate relevant search keywords before driving the input box. */
         private void QuickTopic_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button sourceButtonClicked && sourceButtonClicked.Content != null)
