@@ -1,0 +1,222 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\chatmessage.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\cybersecuritychatbotgui.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\cybersecuritychatbotgui.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\obj\\Debug\\net10.0-windows\\CybersecurityChatbotGUI.AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:CybersecurityChatbotGUI\\obj\\Debug\\net10.0-windows\\CybersecurityChatbotGUI.AssemblyInfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\chatbotengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\chatbotengine.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\chatbotresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\chatbotresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\sessioncontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\sessioncontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\botinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\botinterface.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\app.config||{FA3CD31E-987B-443A-9B81-186104E8DAC1}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\app.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|c:\\users\\joshua\\source\\repos\\cybersecuritychatbotgui\\cybersecuritychatbotgui\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4685A592-8F42-4618-982A-AE051F8104FD}|CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj|solutionrelative:cybersecuritychatbotgui\\assemblyinfo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 11,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ChatMessage.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\ChatMessage.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\ChatMessage.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\ChatMessage.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\ChatMessage.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAC4AAABYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T07:52:05.367Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CybersecurityChatbotGUI",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\CybersecurityChatbotGUI.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-14T07:27:37.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "App.config",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\App.config",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\App.config",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\App.config",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\App.config",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000601|",
+              "WhenOpened": "2026-05-14T07:12:50.617Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "App.xaml",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\App.xaml",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\App.xaml",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\App.xaml",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\App.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-14T07:10:52.188Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ChatbotEngine.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\ChatbotEngine.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\ChatbotEngine.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\ChatbotEngine.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\ChatbotEngine.cs",
+              "ViewState": "AgIAAC4BAAAAAAAAAAAmwPYBAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:32:45.684Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "CybersecurityChatbotGUI.AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\obj\\Debug\\net10.0-windows\\CybersecurityChatbotGUI.AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\obj\\Debug\\net10.0-windows\\CybersecurityChatbotGUI.AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\obj\\Debug\\net10.0-windows\\CybersecurityChatbotGUI.AssemblyInfo.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\obj\\Debug\\net10.0-windows\\CybersecurityChatbotGUI.AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:24:34.223Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "SessionContext.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\SessionContext.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\SessionContext.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\SessionContext.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\SessionContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB0AAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:23:54.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AssemblyInfo.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\AssemblyInfo.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\AssemblyInfo.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\AssemblyInfo.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\AssemblyInfo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:23:49.226Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "BotInterface.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\BotInterface.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\BotInterface.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\BotInterface.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\BotInterface.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAD8AAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:23:47.641Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ChatbotResponse.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\ChatbotResponse.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\ChatbotResponse.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\ChatbotResponse.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\ChatbotResponse.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACYAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:23:33.649Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\MainWindow.xaml",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\MainWindow.xaml",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-14T06:22:24.959Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "CybersecurityChatbotGUI\\MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\Joshua\\source\\repos\\CybersecurityChatbotGUI\\CybersecurityChatbotGUI\\MainWindow.xaml.cs",
+              "RelativeToolTip": "CybersecurityChatbotGUI\\MainWindow.xaml.cs",
+              "ViewState": "AgIAAIAAAAAAAAAAAAAswMUAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-14T06:22:23.913Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
