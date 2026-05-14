@@ -50,6 +50,12 @@ namespace CybersecurityChatbotGUI
         */
         public string MessageFontFamily => IsMonospace ? "Cascadia Code, Consolas" : "Segoe UI";
 
+        /* Logic gate for text flow: 
+        Prevents ASCII art from being scrambled by disabling wrapping, 
+        while ensuring conversational text can span multiple lines.
+        */
+        public TextWrapping MessageWrapping => IsMonospace ? TextWrapping.NoWrap : TextWrapping.Wrap;
+
         public event PropertyChangedEventHandler? PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string? propertyName = null)

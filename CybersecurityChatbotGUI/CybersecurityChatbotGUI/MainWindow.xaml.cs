@@ -41,23 +41,34 @@ namespace CybersecurityChatbotGUI
         }
 
         /* Main runtime entry initialization sequence.
-        Triggers vocal wav greetings and appends structural greeting data logs.
+        Triggers vocal wav greetings and executes an asynchronous streaming line-by-line terminal boot animation inside a single bubble node.
         
         References:
         Microsoft (2023). Window.Loaded Event. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.window.loaded
+        Task.Delay Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.delay
         */
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             PlayVoiceGreeting();
 
-            /* 1. Append the ASCII Art layout using the monospace text rendering flag to prevent structural distortion */
+            /* 1. Create ONE single message container node for the entire ASCII banner so it stays inside one unified terminal block */
             var asciiArtNode = new ChatMessage
             {
                 IsBot = true,
                 IsMonospace = true,
-                Text = _botInterface.GetAsciiArt()
+                Text = string.Empty
             };
             MessageHistory.Add(asciiArtNode);
+
+            /* Stream lines incrementally into the single message container to animate the boot sequence safely without scattering bubbles */
+            foreach (string line in _botInterface.GetAsciiArtLines())
+            {
+                asciiArtNode.Text += line + "\n";
+                ChatScroller.ScrollToEnd();
+
+                /* Introduces a clean 50 millisecond boot-up pause between terminal text rows */
+                await Task.Delay(50);
+            }
 
             /* 2. Append the system welcome message guidelines using regular design fonts */
             var initialWelcomeNode = new ChatMessage
@@ -70,14 +81,13 @@ namespace CybersecurityChatbotGUI
 
             /* Automatically shifts visual position layout context indexes to match standard view boundaries */
             ChatScroller.ScrollToEnd();
-            await Task.CompletedTask;
         }
 
         /* Voice greeting feature ported from Part 1 (Task 1).
         Utilizes an explicit operating system guard to clear modern platform compilation errors gracefully.
         
         References:
-        Microsoft (2023). SoundPlayer Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.media.soundplayer
+        Microsoft (2023). SoundPlayer Class. [Online] Microsoft Learn. Available at: https://learn.microsoft.com/en-us/dotnet/api/system.media.soundplayer
         Microsoft (2023). OperatingSystem.IsWindows Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.operatingsystem.iswindows
         */
         private void PlayVoiceGreeting()
@@ -140,7 +150,7 @@ namespace CybersecurityChatbotGUI
             await StreamTypewriterBotOutputAsync(internalEngineResultResponse);
         }
 
-        /* Routes the mouse click event context into the submission pipeline logic.
+        /* Routes the mouse click event context into the submission pipeline logic safely using async/await standard patterns.
         
         References:
         Microsoft (2023). ButtonBase.OnClick Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.primitives.buttonbase.onclick
@@ -150,7 +160,7 @@ namespace CybersecurityChatbotGUI
             await HandleUserSubmissionAsync();
         }
 
-        /* Captures physical physical keyboard inputs to detect and handle enter submission events.
+        /* Captures physical physical keyboard inputs to detect and handle enter submission events safely using async/await standard patterns.
         
         References:
         Microsoft (2023). UIElement.KeyDown Event. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.uielement.keydown
@@ -180,7 +190,6 @@ namespace CybersecurityChatbotGUI
         
         References:
         Microsoft (2023). Asynchronous programming with async and await. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
-        Task.Delay Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.delay
         */
         private async Task StreamTypewriterBotOutputAsync(string completeMessageText)
         {
@@ -209,7 +218,7 @@ namespace CybersecurityChatbotGUI
         }
 
         /* Automated parsing adapter routing click events fired by quick navigation chips or cards directly into processing channels.
-        Cleans contextual labels to isolate relevant search keywords before driving the input box.
+        Cleans contextual labels to isolate relevant search keywords before driving the input box. Handles both regular spaces and non-breaking space symbols safely.
         
         References:
         Microsoft (2023). RoutedEventArgs Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.routedeventargs
@@ -220,10 +229,12 @@ namespace CybersecurityChatbotGUI
             {
                 string textExtractedLine = sourceButtonClicked.Content.ToString() ?? string.Empty;
 
-                /* Drops emojis and spacing tokens from leading index boundaries if present */
-                if (textExtractedLine.Contains("   "))
+                /* Sanitize web spacing artifacts and double spaces to locate clean labels */
+                textExtractedLine = textExtractedLine.Replace("\u00A0", " ");
+
+                if (textExtractedLine.Contains("    "))
                 {
-                    string[] splitSegments = textExtractedLine.Split(new[] { "   " }, StringSplitOptions.None);
+                    string[] splitSegments = textExtractedLine.Split(new[] { "    " }, StringSplitOptions.None);
                     if (splitSegments.Length > 1) textExtractedLine = splitSegments[1];
                 }
                 else if (textExtractedLine.Length > 4 && (textExtractedLine.Contains("  ")))
