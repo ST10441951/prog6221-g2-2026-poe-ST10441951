@@ -1,81 +1,38 @@
 ﻿<Window x:Class="CybersecurityChatbotGUI.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Cyber-Shield | Enterprise Secure Terminal" Height="840" Width="1200"
-        WindowStartupLocation="CenterScreen" Background="#060A13" Loaded="Window_Loaded">
+        Title="Cyber-Shield AI" Height="750" Width="550"
+        WindowStartupLocation="CenterScreen" Background="#0F172A" Loaded="Window_Loaded">
 
     <Window.Resources>
-        <SolidColorBrush x:Key="BgBase"      Color="#060A13"/>
-        <SolidColorBrush x:Key="BgSurface"   Color="#0C1428"/>
-        <SolidColorBrush x:Key="BgElevated"  Color="#111D35"/>
-        <SolidColorBrush x:Key="BorderMuted" Color="#172340"/>
-        <SolidColorBrush x:Key="BorderSub"   Color="#0F1C36"/>
-        <SolidColorBrush x:Key="TextPrimary" Color="#E2EEF9"/>
-        <SolidColorBrush x:Key="TextDim"     Color="#4A6A8A"/>
-        <SolidColorBrush x:Key="Cyan"        Color="#00D4FF"/>
-        <SolidColorBrush x:Key="Green"       Color="#10B981"/>
-        <SolidColorBrush x:Key="Red"         Color="#F43F5E"/>
+        <SolidColorBrush x:Key="TextPrimary" Color="#F8FAFC"/>
+        <SolidColorBrush x:Key="TextDim"     Color="#64748B"/>
+        <SolidColorBrush x:Key="BotBubble"   Color="#1E293B"/>
+        <SolidColorBrush x:Key="UserBubble"  Color="#10B981"/>
+        <SolidColorBrush x:Key="InputBorder" Color="#334155"/>
+        <SolidColorBrush x:Key="InputBg"     Color="#1E293B"/>
 
-        <LinearGradientBrush x:Key="CyanGrad" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#00D4FF" Offset="0"/>
-            <GradientStop Color="#0369A1" Offset="1"/>
-        </LinearGradientBrush>
-
-        <LinearGradientBrush x:Key="GreenGrad" StartPoint="0,0" EndPoint="1,1">
+        <LinearGradientBrush x:Key="ButtonGrad" StartPoint="0,0" EndPoint="1,1">
             <GradientStop Color="#10B981" Offset="0"/>
-            <GradientStop Color="#047857" Offset="1"/>
+            <GradientStop Color="#059669" Offset="1"/>
         </LinearGradientBrush>
 
-        <LinearGradientBrush x:Key="SidebarGrad" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Color="#070C17" Offset="0"/>
-            <GradientStop Color="#060A13" Offset="1"/>
-        </LinearGradientBrush>
-
-        <Style x:Key="QuickBtn" TargetType="Button">
-            <Setter Property="Foreground" Value="#4A6A8A"/>
+        <Style x:Key="SuggestionChipBtn" TargetType="Button">
+            <Setter Property="Foreground" Value="#94A3B8"/>
             <Setter Property="FontFamily" Value="Segoe UI"/>
-            <Setter Property="FontSize" Value="13"/>
-            <Setter Property="Padding" Value="16,11"/>
-            <Setter Property="Margin" Value="0,2"/>
+            <Setter Property="FontSize" Value="12"/>
             <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="HorizontalContentAlignment" Value="Left"/>
+            <Setter Property="Margin" Value="0,0,8,0"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd" Background="Transparent" CornerRadius="8" BorderBrush="Transparent" BorderThickness="1" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                        <Border x:Name="Bd" Padding="12,6" Background="#1E293B" CornerRadius="15" BorderBrush="#334155" BorderThickness="1">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#0C1428"/>
-                                <Setter TargetName="Bd" Property="BorderBrush" Value="#172340"/>
-                                <Setter Property="Foreground" Value="#00D4FF"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background" Value="#111D35"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <Style x:Key="CardBtn" TargetType="Button">
-            <Setter Property="Background" Value="#0C1428"/>
-            <Setter Property="BorderBrush" Value="#172340"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Padding" Value="20"/>
-            <Setter Property="Cursor" Value="Hand"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="12" Padding="{TemplateBinding Padding}">
-                            <ContentPresenter/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="BorderBrush" Value="#00D4FF"/>
-                                <Setter Property="Background" Value="#111D35"/>
+                                <Setter TargetName="Bd" Property="BorderBrush" Value="#10B981"/>
+                                <Setter Property="Foreground" Value="#10B981"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -84,239 +41,86 @@
         </Style>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="260"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Background="{StaticResource SidebarGrad}" BorderBrush="{StaticResource BorderSub}" BorderThickness="0,0,1,0">
-            <DockPanel LastChildFill="True">
-                <Border DockPanel.Dock="Top" Padding="22,26,22,22" BorderBrush="{StaticResource BorderSub}" BorderThickness="0,0,0,1">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Border Grid.Column="0" Width="40" Height="40" CornerRadius="10" Margin="0,0,12,0" Background="{StaticResource CyanGrad}">
-                            <Border.Effect>
-                                <DropShadowEffect Color="#00D4FF" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
-                            </Border.Effect>
-                            <TextBlock Text="🛡️" Foreground="White" FontSize="20" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Border>
-                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
-                            <TextBlock Text="CYBER-SHIELD AI" Foreground="{StaticResource TextPrimary}" FontSize="14" FontWeight="Black" FontFamily="Segoe UI"/>
-                            <TextBlock Text="v2.5, ACTIVE SHIELD" Foreground="#1F4060" FontSize="9" FontFamily="Segoe UI Semibold"/>
-                        </StackPanel>
-                    </Grid>
-                </Border>
-
-                <Border DockPanel.Dock="Top" Margin="14,16,14,10" Padding="16,14" Background="{StaticResource BgSurface}" CornerRadius="12" BorderBrush="{StaticResource BorderMuted}" BorderThickness="1">
-                    <StackPanel>
-                        <TextBlock Text="SECURITY RISK PROFILE" Foreground="{StaticResource TextDim}" FontSize="9" FontWeight="Bold" Margin="0,0,0,8"/>
-                        <StackPanel Orientation="Horizontal" Margin="0,0,0,8">
-                            <Rectangle Width="3" RadiusX="1.5" RadiusY="1.5" Fill="{StaticResource Green}" Margin="0,0,12,0"/>
-                            <StackPanel>
-                                <TextBlock Text="LOW RISK" Foreground="{StaticResource Green}" FontSize="16" FontWeight="Black"/>
-                                <TextBlock Text="Node monitoring active" Foreground="#2A4060" FontSize="10"/>
-                            </StackPanel>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-
-                <Grid DockPanel.Dock="Top" Margin="14,0,14,16">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="6"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Border Grid.Column="0" Padding="12,10" Background="{StaticResource BgSurface}" CornerRadius="10" BorderBrush="{StaticResource BorderMuted}" BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock Text="BLOCKED" Foreground="{StaticResource TextDim}" FontSize="8" FontWeight="Bold"/>
-                            <TextBlock Text="247" Foreground="{StaticResource Red}" FontSize="20" FontWeight="Black" Margin="0,2,0,1"/>
-                        </StackPanel>
-                    </Border>
-                    <Border Grid.Column="2" Padding="12,10" Background="{StaticResource BgSurface}" CornerRadius="10" BorderBrush="{StaticResource BorderMuted}" BorderThickness="1">
-                        <StackPanel>
-                            <TextBlock Text="INTEGRITY" Foreground="{StaticResource TextDim}" FontSize="8" FontWeight="Bold"/>
-                            <TextBlock Text="100%" Foreground="{StaticResource Cyan}" FontSize="20" FontWeight="Black" Margin="0,2,0,1"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <TextBlock DockPanel.Dock="Top" Text="SECURITY MODULES" Foreground="{StaticResource TextDim}" FontSize="9" FontWeight="Bold" Margin="22,10,22,6"/>
-
-                <StackPanel DockPanel.Dock="Top" Margin="10,0,10,0">
-                    <Button Style="{StaticResource QuickBtn}" Content="💬   AI Chat Assistant" Click="QuickTopic_Click"/>
-                    <Button Style="{StaticResource QuickBtn}" Content="🔑   Password Management" Click="QuickTopic_Click"/>
-                    <Button Style="{StaticResource QuickBtn}" Content="🎣   Phishing Identification" Click="QuickTopic_Click"/>
-                    <Button Style="{StaticResource QuickBtn}" Content="👁️   Data Privacy Control" Click="QuickTopic_Click"/>
-                    <Button Style="{StaticResource QuickBtn}" Content="🛑   Ransomware Mitigation" Click="QuickTopic_Click"/>
-                    <Button Style="{StaticResource QuickBtn}" Content="🧱   Firewall Operations" Click="QuickTopic_Click"/>
+        <Border Grid.Row="0" Padding="4,0,4,15" BorderBrush="#1E293B" BorderThickness="0,0,0,1" Margin="0,0,0,15">
+            <Grid>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock Text="CYBERSECURITY CHATBOT" Foreground="{StaticResource TextPrimary}" FontSize="16" FontWeight="Bold" FontFamily="Segoe UI" VerticalAlignment="Center"/>
                 </StackPanel>
-
-                <Border DockPanel.Dock="Bottom" Padding="22,14" BorderBrush="{StaticResource BorderSub}" BorderThickness="0,1,0,0">
-                    <StackPanel Orientation="Horizontal">
-                        <Ellipse Width="6" Height="6" Fill="{StaticResource Green}" VerticalAlignment="Center" Margin="0,0,8,0">
-                            <Ellipse.Effect>
-                                <DropShadowEffect Color="#10B981" BlurRadius="6" ShadowDepth="0"/>
-                            </Ellipse.Effect>
-                        </Ellipse>
-                        <TextBlock Text="AES-256 SECURE CONNECTION" Foreground="#253C55" FontSize="9" FontWeight="Bold"/>
-                    </StackPanel>
-                </Border>
-                <Border/>
-            </DockPanel>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                    <Ellipse Width="6" Height="6" Fill="#10B981" Margin="0,0,6,0"/>
+                    <TextBlock Text="Secure Connection Active" Foreground="#10B981" FontSize="11" FontFamily="Segoe UI" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Grid>
         </Border>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <Border Grid.Row="0" Padding="28,18,24,18" Background="{StaticResource BgBase}" BorderBrush="{StaticResource BorderSub}" BorderThickness="0,0,0,1">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="Cybersecurity Intelligence Hub" Foreground="{StaticResource TextPrimary}" FontSize="15" FontWeight="Bold"/>
-                        <TextBlock Text="Active Session Client Node, Context Verification Enabled" Foreground="#253C55" FontSize="11" Margin="0,2,0,0"/>
-                    </StackPanel>
-                </Grid>
-            </Border>
-
-            <Grid Grid.Row="1">
-                <Grid.Background>
-                    <DrawingBrush TileMode="Tile" Viewport="0,0,24,24" ViewportUnits="Absolute">
-                        <DrawingBrush.Drawing>
-                            <DrawingGroup>
-                                <GeometryDrawing Brush="#060A13">
-                                    <GeometryDrawing.Geometry>
-                                        <RectangleGeometry Rect="0,0,24,24"/>
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                                <GeometryDrawing Brush="#0E1A2E">
-                                    <GeometryDrawing.Geometry>
-                                        <EllipseGeometry Center="0,0" RadiusX="0.75" RadiusY="0.75"/>
-                                    </GeometryDrawing.Geometry>
-                                </GeometryDrawing>
-                            </DrawingGroup>
-                        </DrawingBrush.Drawing>
-                    </DrawingBrush>
-                </Grid.Background>
-
-                <ScrollViewer x:Name="ChatScroller" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Padding="30,20">
-                    <StackPanel>
-                        <StackPanel x:Name="WelcomeDashboard" Margin="0,20,0,40" Visibility="Visible">
-                            <TextBlock Text="Shield System Online" Foreground="{StaticResource TextPrimary}" FontSize="28" FontWeight="Black" HorizontalAlignment="Center" Margin="0,0,0,10"/>
-                            <TextBlock Text="Select a predefined intelligence threat group block or enter a query manually below to scan local infrastructure variables." Foreground="#4A6A8A" FontSize="13" HorizontalAlignment="Center" TextAlignment="Center" MaxWidth="500" Margin="0,0,0,35"/>
-
-                            <UniformGrid Columns="2" Rows="2" MaxWidth="700" HorizontalAlignment="Center">
-                                <Button Style="{StaticResource CardBtn}" Margin="8" Click="QuickTopic_Click">
-                                    <StackPanel>
-                                        <TextBlock Text="🔑   Password Safeguards" Foreground="{StaticResource TextPrimary}" FontSize="14" FontWeight="Bold"/>
-                                        <TextBlock Text="Analyze optimization criteria for generating strong enterprise passphrases." Foreground="#4A6A8A" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Style="{StaticResource CardBtn}" Margin="8" Click="QuickTopic_Click">
-                                    <StackPanel>
-                                        <TextBlock Text="🎣   Phishing Interception" Foreground="{StaticResource TextPrimary}" FontSize="14" FontWeight="Bold"/>
-                                        <TextBlock Text="Isolate and evaluate visual indicators inside suspicious mail vector fields." Foreground="#4A6A8A" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Style="{StaticResource CardBtn}" Margin="8" Click="QuickTopic_Click">
-                                    <StackPanel>
-                                        <TextBlock Text="🧱   Network Infrastructure" Foreground="{StaticResource TextPrimary}" FontSize="14" FontWeight="Bold"/>
-                                        <TextBlock Text="Verify perimeter rules and filter logic assigned to native host hardware rules." Foreground="#4A6A8A" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </Button>
-                                <Button Style="{StaticResource CardBtn}" Margin="8" Click="QuickTopic_Click">
-                                    <StackPanel>
-                                        <TextBlock Text="🌐   Virtual Routing Proxies" Foreground="{StaticResource TextPrimary}" FontSize="14" FontWeight="Bold"/>
-                                        <TextBlock Text="Review standard encryption protocols running over unverified networks." Foreground="#4A6A8A" FontSize="11" Margin="0,4,0,0" TextWrapping="Wrap"/>
-                                    </StackPanel>
-                                </Button>
-                            </UniformGrid>
-                        </StackPanel>
-
-                        <ItemsControl x:Name="ChatMessagesControl">
-                            <ItemsControl.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid Margin="0,10" HorizontalAlignment="{Binding BubbleAlignment}">
-                                        <Border CornerRadius="12" Padding="16,12" MaxWidth="650" Background="{Binding BubbleBackground}" BorderBrush="#172340" BorderThickness="1">
-                                            <Border.Effect>
-                                                <DropShadowEffect Color="Black" BlurRadius="10" ShadowDepth="2" Opacity="0.2"/>
-                                            </Border.Effect>
-                                            <StackPanel>
-                                                <TextBlock Text="{Binding Text}" Foreground="{Binding TextColor}" FontSize="14.5" FontFamily="Segoe UI" TextWrapping="Wrap" LineHeight="22"/>
-                                                <TextBlock Text="{Binding Timestamp}" Foreground="#4A6A8A" FontSize="9.5" HorizontalAlignment="Right" Margin="0,5,0,0" FontFamily="Segoe UI Semibold"/>
-                                            </StackPanel>
-                                        </Border>
-                                    </Grid>
-                                </DataTemplate>
-                            </ItemsControl.ItemTemplate>
-                        </ItemsControl>
-                    </StackPanel>
-                </ScrollViewer>
-            </Grid>
-
-            <Border Grid.Row="2" Padding="30,5" Background="Transparent">
-                <StackPanel x:Name="TypingIndicatorRow" Orientation="Horizontal" Visibility="Collapsed">
-                    <TextBlock Text="🛡️   Cyber-Shield AI is processing network context" Foreground="#10B981" FontSize="12.5" FontWeight="SemiBold"/>
-                    <TextBlock Text="..." Foreground="#10B981" FontSize="12.5" FontWeight="Black"/>
-                </StackPanel>
-            </Border>
-
-            <Border Grid.Row="3" Background="#08111F" BorderBrush="{StaticResource BorderSub}" BorderThickness="0,1,0,0" Padding="24,14,24,20">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-
-                    <Border Grid.Column="0" CornerRadius="12" BorderThickness="1" Background="#0C1428" BorderBrush="#172340">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="›_" Foreground="#1A3154" FontSize="16" FontWeight="Bold" VerticalAlignment="Center" Margin="18,0,0,0"/>
-                            <TextBox Grid.Column="1" Name="UserInputBox" Background="Transparent" Foreground="{StaticResource TextPrimary}" FontFamily="Segoe UI" FontSize="14" BorderThickness="0" VerticalContentAlignment="Center" Padding="12,14" CaretBrush="{StaticResource Cyan}" KeyDown="UserInputBox_KeyDown"/>
+        <ScrollViewer x:Name="ChatScroller" Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" Margin="0,0,0,15">
+            <ItemsControl x:Name="ChatMessagesControl">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="0,8" HorizontalAlignment="{Binding BubbleAlignment}">
+                            <Border CornerRadius="12" Padding="14,10" MaxWidth="420" Background="{Binding BubbleBackground}" BorderBrush="#334155" BorderThickness="1">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Text}" Foreground="{Binding TextColor}" FontSize="14" FontFamily="Segoe UI" TextWrapping="Wrap" LineHeight="20"/>
+                                    <TextBlock Text="{Binding Timestamp}" Foreground="{StaticResource TextDim}" FontSize="9" HorizontalAlignment="Right" Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </Border>
                         </Grid>
-                    </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
 
-                    <Button Grid.Column="1" Name="SendButton" Width="48" Height="48" Margin="14,0,0,0" Cursor="Hand" Click="SendButton_Click">
-                        <Button.Template>
-                            <ControlTemplate TargetType="Button">
-                                <Border x:Name="Bd" CornerRadius="12" Background="{StaticResource CyanGrad}">
-                                    <Border.Effect>
-                                        <DropShadowEffect Color="#00D4FF" BlurRadius="15" ShadowDepth="0" Opacity="0.4"/>
-                                    </Border.Effect>
-                                    <TextBlock Text="➔" Foreground="White" FontSize="16" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                </Border>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter TargetName="Bd" Property="Opacity" Value="0.85"/>
-                                    </Trigger>
-                                    <Trigger Property="IsPressed" Value="True">
-                                        <Setter TargetName="Bd" Property="Opacity" Value="0.65"/>
-                                        <Setter TargetName="Bd" Property="RenderTransform">
-                                            <Setter.Value>
-                                                <ScaleTransform ScaleX="0.96" ScaleY="0.96" CenterX="24" CenterY="24"/>
-                                            </Setter.Value>
-                                        </Setter>
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                </Grid>
-            </Border>
-        </Grid>
+        <Border Grid.Row="2" Padding="8,2" Background="Transparent">
+            <StackPanel x:Name="TypingIndicatorRow" Orientation="Horizontal" Visibility="Collapsed" Margin="0,0,0,8">
+                <TextBlock Text="Bot is typing" Foreground="#10B981" FontSize="11" FontFamily="Segoe UI" FontWeight="SemiBold"/>
+                <TextBlock Text="..." Foreground="#10B981" FontSize="11" FontWeight="Black"/>
+            </StackPanel>
+        </Border>
+
+        <StackPanel Grid.Row="3">
+            <StackPanel Orientation="Horizontal" Margin="2,0,0,10" HorizontalAlignment="Left">
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="🔑  Passwords" Click="QuickTopic_Click"/>
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="🎣  Phishing" Click="QuickTopic_Click"/>
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="👁️  Privacy" Click="QuickTopic_Click"/>
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="❓  Help" Click="QuickTopic_Click"/>
+            </StackPanel>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.Column="0" CornerRadius="20" BorderThickness="1" Background="{StaticResource InputBg}" BorderBrush="{StaticResource InputBorder}">
+                    <TextBox Name="UserInputBox" Background="Transparent" Foreground="{StaticResource TextPrimary}" FontFamily="Segoe UI" FontSize="14" BorderThickness="0" VerticalContentAlignment="Center" Padding="16,10" CaretBrush="#10B981" KeyDown="UserInputBox_KeyDown"/>
+                </Border>
+
+                <Button Grid.Column="1" Name="SendButton" Width="40" Height="40" Margin="10,0,0,0" Cursor="Hand" Click="SendButton_Click">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="Bd" CornerRadius="20" Background="{StaticResource ButtonGrad}">
+                                <TextBlock Text="➔" Foreground="White" FontSize="14" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="Bd" Property="Opacity" Value="0.9"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="Bd" Property="Opacity" Value="0.7"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+        </StackPanel>
     </Grid>
 </Window>

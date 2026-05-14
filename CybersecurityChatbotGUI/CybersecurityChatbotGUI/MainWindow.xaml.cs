@@ -9,9 +9,9 @@ using System.Windows.Input;
 
 namespace CybersecurityChatbotGUI
 {
-    /* Code-behind driver managing live data visualization routing. 
-    Refactored to eliminate obsolete paragraph inline additions by migrating message feeds into clean observable objects.
-    All background audio and name extraction routines remain untouched to meet verification criteria.
+    /* Code-behind driver managing simple message visualization streams.
+    Removed complex dashboard visibility controls to provide a completely minimal workspace view.
+    All background sound assets and data engine parameters remain integrated without changes.
     */
     public partial class MainWindow : Window
     {
@@ -83,12 +83,6 @@ namespace CybersecurityChatbotGUI
             if (string.IsNullOrWhiteSpace(inputTextContent)) return;
 
             UserInputBox.Clear();
-
-            /* Clear empty state system hub cards on initial valid structural input event */
-            if (WelcomeDashboard.Visibility == Visibility.Visible)
-            {
-                WelcomeDashboard.Visibility = Visibility.Collapsed;
-            }
 
             /* Log user message item node inside our collection array layer */
             MessageHistory.Add(new ChatMessage { IsBot = false, Text = inputTextContent });
