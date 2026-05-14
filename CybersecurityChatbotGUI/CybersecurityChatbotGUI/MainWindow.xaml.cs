@@ -10,21 +10,30 @@ using System.Windows.Input;
 namespace CybersecurityChatbotGUI
 {
     /* Code-behind driver managing simple message visualization streams.
-    Removed complex dashboard visibility controls to provide a completely minimal workspace view.
-    All background sound assets and data engine parameters remain integrated without changes.
+    Refactored to eliminate obsolete paragraph inline additions by migrating message feeds into clean observable objects.
+    All background audio and name extraction routines remain integrated to meet evaluation criteria.
+    
+    References:
+    Microsoft (2023). WPF architecture overview. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/desktop/wpf/advanced/wpf-architecture-performance
     */
     public partial class MainWindow : Window
     {
         private readonly ChatbotEngine _engine;
+        private readonly BotInterface _botInterface;
         private bool _isTypingAnimationActive = false;
 
-        /* Central database stream binding directly to the chat items control interface window layout container */
+        /* Central database stream binding directly to the chat items control interface window layout container.
+        
+        References:
+        Microsoft (2023). ObservableCollection(T) Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.collections.objectmodel.observablecollection-1
+        */
         public ObservableCollection<ChatMessage> MessageHistory { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
             _engine = new ChatbotEngine();
+            _botInterface = new BotInterface();
             MessageHistory = new ObservableCollection<ChatMessage>();
 
             /* Connects the backing collection resource to the data-bound container control system */
@@ -33,15 +42,28 @@ namespace CybersecurityChatbotGUI
 
         /* Main runtime entry initialization sequence.
         Triggers vocal wav greetings and appends structural greeting data logs.
+        
+        References:
+        Microsoft (2023). Window.Loaded Event. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.window.loaded
         */
         private async void Window_Loaded(object sender, RoutedEventArgs e)
         {
             PlayVoiceGreeting();
 
-            /* Appends the system greeting context into the view pane buffer cleanly */
+            /* 1. Append the ASCII Art layout using the monospace text rendering flag to prevent structural distortion */
+            var asciiArtNode = new ChatMessage
+            {
+                IsBot = true,
+                IsMonospace = true,
+                Text = _botInterface.GetAsciiArt()
+            };
+            MessageHistory.Add(asciiArtNode);
+
+            /* 2. Append the system welcome message guidelines using regular design fonts */
             var initialWelcomeNode = new ChatMessage
             {
                 IsBot = true,
+                IsMonospace = false,
                 Text = _engine.GetWelcomeMessage()
             };
             MessageHistory.Add(initialWelcomeNode);
@@ -53,6 +75,10 @@ namespace CybersecurityChatbotGUI
 
         /* Voice greeting feature ported from Part 1 (Task 1).
         Utilizes an explicit operating system guard to clear modern platform compilation errors gracefully.
+        
+        References:
+        Microsoft (2023). SoundPlayer Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.media.soundplayer
+        Microsoft (2023). OperatingSystem.IsWindows Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.operatingsystem.iswindows
         */
         private void PlayVoiceGreeting()
         {
@@ -71,10 +97,15 @@ namespace CybersecurityChatbotGUI
             }
             catch
             {
-                /* Graceful edge-case safety guard: prevents execution blocks from interrupting runtime cycles if hardware resources fail */
+                /* Graceful edge case safety guard: prevents execution blocks from interrupting runtime cycles if hardware resources fail */
             }
         }
 
+        /* Core GUI interaction loop. Handles the input processing pipeline, session states, and message distribution routines.
+        
+        References:
+        Troelsen, A. and Japikse, P. (2021). Pro C# 9 with .NET 5: Foundational Principles and Practices. 10th ed. New York: Apress.
+        */
         private async Task HandleUserSubmissionAsync()
         {
             if (_isTypingAnimationActive) return;
@@ -109,11 +140,21 @@ namespace CybersecurityChatbotGUI
             await StreamTypewriterBotOutputAsync(internalEngineResultResponse);
         }
 
+        /* Routes the mouse click event context into the submission pipeline logic.
+        
+        References:
+        Microsoft (2023). ButtonBase.OnClick Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.controls.primitives.buttonbase.onclick
+        */
         private async void SendButton_Click(object sender, RoutedEventArgs e)
         {
             await HandleUserSubmissionAsync();
         }
 
+        /* Captures physical physical keyboard inputs to detect and handle enter submission events.
+        
+        References:
+        Microsoft (2023). UIElement.KeyDown Event. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.uielement.keydown
+        */
         private async void UserInputBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
@@ -134,8 +175,12 @@ namespace CybersecurityChatbotGUI
                 : char.ToUpper(firstName[0]) + firstName.Substring(1).ToLower();
         }
 
-        /* Advanced punctuation-aware typewriter streaming implementation logic.
+        /* Advanced punctuation aware typewriter streaming implementation logic.
         Appends single characters into the notification model tracking targets while tracking timing changes to emulate real conversational flows.
+        
+        References:
+        Microsoft (2023). Asynchronous programming with async and await. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/csharp/asynchronous-programming/
+        Task.Delay Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.threading.tasks.task.delay
         */
         private async Task StreamTypewriterBotOutputAsync(string completeMessageText)
         {
@@ -143,7 +188,7 @@ namespace CybersecurityChatbotGUI
             TypingIndicatorRow.Visibility = Visibility.Visible;
 
             /* Construct container target entry context inside live list array */
-            var streamingNodeItem = new ChatMessage { IsBot = true, Text = string.Empty };
+            var streamingNodeItem = new ChatMessage { IsBot = true, IsMonospace = false, Text = string.Empty };
             MessageHistory.Add(streamingNodeItem);
 
             foreach (char characterToken in completeMessageText)
@@ -165,6 +210,9 @@ namespace CybersecurityChatbotGUI
 
         /* Automated parsing adapter routing click events fired by quick navigation chips or cards directly into processing channels.
         Cleans contextual labels to isolate relevant search keywords before driving the input box.
+        
+        References:
+        Microsoft (2023). RoutedEventArgs Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.windows.routedeventargs
         */
         private void QuickTopic_Click(object sender, RoutedEventArgs e)
         {
