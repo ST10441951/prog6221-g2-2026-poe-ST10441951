@@ -6,7 +6,9 @@ namespace CybersecurityChatbotGUI
 {
     /* I used this delegate to satisfy the "delegates" learning outcome in the rubric. 
     It is used throughout ProcessUserInput to compose every final response string, keeping formatting logic decoupled from the main business logic (Task 8).
-    Microsoft (2023). Delegates (C# Programming Guide). [Online] Microsoft Learn. Available at: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/ 
+    
+    References:
+    Microsoft (2023). Delegates (C# Programming Guide). [Online] Microsoft Learn. Available at: https://learn.microsoft.com/en-us/dotnet/csharp/programming-guide/delegates/
     */
     public delegate string FormatResponseDelegate(string prefix, string content);
 
@@ -14,15 +16,19 @@ namespace CybersecurityChatbotGUI
     Task 2: Keyword Recognition (13 topics, fuzzy matching)
     Task 3: Random Responses (5 responses per topic minimum)
     Task 4: Conversation Flow (10 follow up triggers)
-    Task 5: Memory and Recall (name + favourite topic + last topic)
+    Task 5: Memory and Recall (name, favourite topic, last topic)
     Task 6: Sentiment Detection (8 sentiments, auto tip on distress)
-    Task 7: Error Handling (graceful default + rephrasing hint)
+    Task 7: Error Handling (graceful default, rephrasing hint)
     Task 8: Code Optimisation (OOP, Dictionary, List, delegate, LINQ)
     By keeping this logic separate from the GUI, I am demonstrating strong OOP principles.
     */
     public class ChatbotEngine
     {
-        /* Knowledge base: mapping topics to a pool of responses (Tasks 2 and 3). */
+        /* Knowledge base: mapping topics to a pool of responses (Tasks 2 and 3). 
+        
+        References:
+        Troelsen, A. and Japikse, P. (2021). Pro C# 9 with .NET 5: Foundational Principles and Practices. 10th ed. New York: Apress.
+        */
         private readonly List<ChatbotResponse> _knowledgeBase;
 
         /* Sentiment keyword mapping to an empathetic prefix string (Task 6). */
@@ -202,6 +208,9 @@ namespace CybersecurityChatbotGUI
         I included 8 distinct sentiments to hit the "greatly exceeds" band (9 to 10 marks). 
         The values are empathetic prefix strings injected before the tip. 
         Using a Dictionary<string, string> gives me O(1) key lookup, fulfilling the Code Optimisation requirement (Task 8). 
+        
+        References:
+        Microsoft (2023). Dictionary(TKey,TValue) Class. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.collections.generic.dictionary-2
         */
         private Dictionary<string, string> BuildSentimentMap()
         {
@@ -266,7 +275,9 @@ namespace CybersecurityChatbotGUI
 
         /* I researched and implemented the Levenshtein Distance algorithm here to add fuzzy matching. 
         This allows a typo like "pasword" to still match "password", making the bot much more robust for Task 2.
-        Dot Net Perls (2023). Levenshtein Distance in C#. [Online] Available at: https://www.dotnetperls.com/levenshtein 
+        
+        References:
+        Dot Net Perls (2023). Levenshtein Distance in C#. [Online] Available at: https://www.dotnetperls.com/levenshtein
         */
         private int ComputeLevenshteinDistance(string source, string target)
         {
@@ -294,7 +305,9 @@ namespace CybersecurityChatbotGUI
 
         /* Task 5: Memory and Recall (Name Extraction). 
         This method checks the user's input for patterns like "my name is X" and extracts the capitalized first name.
-        Microsoft (2023). String.Substring Method. [Online] Microsoft Learn. Available at: https://learn.microsoft.com/en-us/dotnet/api/system.string.substring 
+        
+        References:
+        Microsoft (2023). String.Substring Method. [Online] Microsoft Learn. Available at: https://learn.microsoft.com/en-us/dotnet/api/system.string.substring
         */
         private string? TryExtractName(string lowerInput)
         {
@@ -359,6 +372,9 @@ namespace CybersecurityChatbotGUI
         5. Follow up flow (Task 4)
         6. Keyword match + memory (Tasks 2, 3, 5)
         7. Default error response (Task 7) 
+        
+        References:
+        Microsoft (2023). Enumerable.Any Method. [Online] Available at: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.any
         */
         public string ProcessUserInput(string input)
         {
@@ -490,12 +506,12 @@ namespace CybersecurityChatbotGUI
             return
                 "System Online. I am your Cybersecurity Awareness Assistant.\n\n" +
                 "I can help you with:\n" +
-                "  • Passwords          • Phishing\n" +
-                "  • Privacy            • Scams\n" +
-                "  • Malware            • Ransomware\n" +
-                "  • Firewalls          • Two Factor Auth (2FA)\n" +
-                "  • VPN                • Software Updates\n" +
-                "  • Social Engineering\n\n" +
+                "   • Passwords          • Phishing\n" +
+                "   • Privacy            • Scams\n" +
+                "   • Malware            • Ransomware\n" +
+                "   • Firewalls          • Two Factor Auth (2FA)\n" +
+                "   • VPN                • Software Updates\n" +
+                "   • Social Engineering\n\n" +
                 "Type 'help' at any time to see all topics.\n\n" +
                 "Before we begin, may I know your name?";
         }
