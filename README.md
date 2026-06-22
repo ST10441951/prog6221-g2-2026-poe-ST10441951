@@ -6,7 +6,6 @@
 * **YouTube Presentation:** https://youtu.be/WnkHFbt8Sw0
 * **GitHub Repository:** https://github.com/ST10441951/prog6221-g2-2026-poe-ST10441951
 
-> **Note:** If you have recorded a new walkthrough for Part 3, replace the YouTube link above with the new one.
 
 ---
 
