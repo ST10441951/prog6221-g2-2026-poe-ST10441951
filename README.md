@@ -69,6 +69,9 @@ password in the connection string:
 * Only `pwd=` normally needs changing.
 * **You do not need to create the database or tables** — the app creates the `cyber_chatbot`
   database and `tasks` table automatically on first run.
+* A standalone SQL script is also provided at **`Database/cyber_chatbot.sql`** if you prefer to
+  create the schema (and some sample data) manually — open it in MySQL Workbench and Execute,
+  or run `mysql -u root -p < Database/cyber_chatbot.sql`.
 
 ### 3. Run
 Open `CybersecurityChatbotGUI/CybersecurityChatbotGUI.slnx` in Visual Studio and press **F5**,
