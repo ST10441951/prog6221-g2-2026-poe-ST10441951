@@ -5,10 +5,10 @@ using MySql.Data.MySqlClient;
 namespace CybersecurityChatbotGUI
 {
     /* Part 3 / Task 1: Central MySQL access point.
-    I created this static helper so every database class in the project (the TaskRepository
-    that Part B will add) gets its connection from ONE place. This keeps the connection
-    string in App.config only, demonstrates separation of concerns, and means a marker can
-    repoint the whole app at their server by editing App.config alone.
+    I created this static helper so every database class in the project (such as the
+    TaskRepository) gets its connection from ONE place. This keeps the connection string in
+    App.config only, demonstrates separation of concerns, and means a marker can repoint the
+    whole app at their server by editing App.config alone.
 
     References:
     Oracle (2024). Connector/NET Programming. [Online] MySQL Developer Guide.
@@ -71,7 +71,7 @@ namespace CybersecurityChatbotGUI
         /* Robustness helper: creates the schema database itself if it does not yet exist,
         so the app works on a fresh MySQL install without the marker manually creating it.
         We connect to the server WITHOUT selecting a database, then issue CREATE DATABASE.
-        Part B's TaskRepository creates the tables inside this database.
+        The TaskRepository then creates the tables inside this database.
 
         Reference:
         Oracle (2024). MySqlConnectionStringBuilder Class. [Online] MySQL Developer Guide.

@@ -45,7 +45,7 @@ namespace CybersecurityChatbotGUI
         public SessionContext Session { get; private set; }
 
         /* Part 3 / Task 4: the running log of everything the bot has done this session.
-        Exposed publicly so the GUI (and Parts B & C) can record their own actions too. */
+        Exposed publicly so the GUI windows can record their own actions too. */
         public ActivityLogger ActivityLog { get; private set; }
 
         /* Part 3 / Task 1: exposes the shared task repository so the Task Manager window uses
@@ -667,8 +667,8 @@ namespace CybersecurityChatbotGUI
                     return HandleDeleteTask(intent);
 
                 case ChatIntent.StartQuiz:
-                    /* Task 2 (Part C): the actual quiz window is opened by MainWindow when it
-                    sees LastHandledIntent == StartQuiz. Here we just record the request. */
+                    /* Task 2: the actual quiz window is opened by MainWindow when it sees
+                    LastHandledIntent == StartQuiz. Here we just record the request. */
                     ActivityLog.Log(ActivityCategory.Quiz, "Requested to start the cybersecurity quiz.");
                     return _formatter("",
                         "Get ready! Launching the cybersecurity mini-game for you now. " +

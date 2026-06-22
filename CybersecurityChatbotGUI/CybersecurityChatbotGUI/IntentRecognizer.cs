@@ -19,7 +19,8 @@ namespace CybersecurityChatbotGUI
     }
 
     /* The outcome of analysing one user message: which intent it is, plus any useful text
-    pulled out of it (e.g. the task description). Part B uses Detail to build the TaskItem.
+    pulled out of it (e.g. the task description). The chatbot engine uses Detail to build the
+    TaskItem when the user adds a task (Task 1).
     */
     public class IntentResult
     {
