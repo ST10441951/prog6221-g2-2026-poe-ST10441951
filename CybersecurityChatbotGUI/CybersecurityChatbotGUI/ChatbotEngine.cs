@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace CybersecurityChatbotGUI
 {
@@ -32,14 +34,36 @@ namespace CybersecurityChatbotGUI
         /* Delegate instance used to build every response (delegate learning outcome). */
         private readonly FormatResponseDelegate _formatter;
 
+        /* Part 3 / Task 3: recognises commands (add task, quiz, show log, etc.) so the bot
+        does far more than answer knowledge questions. */
+        private readonly IntentRecognizer _intentRecognizer;
+
+        /* Part 3 / Task 1: data-access layer for the MySQL task store. */
+        private readonly TaskRepository _taskRepository;
+
         /* Live session state shared with the GUI to handle Task 5 (Memory and Recall). */
         public SessionContext Session { get; private set; }
+
+        /* Part 3 / Task 4: the running log of everything the bot has done this session.
+        Exposed publicly so the GUI (and Parts B & C) can record their own actions too. */
+        public ActivityLogger ActivityLog { get; private set; }
+
+        /* Part 3 / Task 1: exposes the shared task repository so the Task Manager window uses
+        the very same database connection settings as the chat. */
+        public TaskRepository Tasks => _taskRepository;
+
+        /* Part 3: the last command the engine acted on, so the GUI can react to intents that
+        need a window (e.g. open the Task Manager when the user says "show my tasks"). */
+        public ChatIntent LastHandledIntent { get; private set; } = ChatIntent.KnowledgeQuery;
 
         /* Constructor to initialize the session and wire up the knowledge base,
         sentiments, and follow up triggers when the engine starts. */
         public ChatbotEngine()
         {
             Session = new SessionContext();
+            ActivityLog = new ActivityLogger();
+            _intentRecognizer = new IntentRecognizer();
+            _taskRepository = new TaskRepository();
 
             /* Lambda expression for the delegate: prefix + content to composed display string */
             _formatter = (prefix, content) =>
@@ -48,6 +72,9 @@ namespace CybersecurityChatbotGUI
             _knowledgeBase = BuildKnowledgeBase();
             _sentiments = BuildSentimentMap();
             _followUpTriggers = BuildFollowUpTriggers();
+
+            /* First entry in the activity log so Task 4 has a timeline from the very start. */
+            ActivityLog.Log(ActivityCategory.Session, "Cybersecurity chatbot session started.");
         }
 
         /* Task 2 and 3: The knowledge base.
@@ -444,10 +471,24 @@ namespace CybersecurityChatbotGUI
             if (string.IsNullOrWhiteSpace(input))
                 return "Please type a message so I can help you!";
 
+            /* Reset each turn; HandleIntent sets it when a command is acted on so the GUI can
+            react (e.g. open the Task Manager window). */
+            LastHandledIntent = ChatIntent.KnowledgeQuery;
+
             string lowerInput = input.ToLower().Trim();
             string[] words = lowerInput.Split(
                 new[] { ' ', '.', '?', '!', ',', ';', ':' },
                 StringSplitOptions.RemoveEmptyEntries);
+
+            /* Part 3 / Task 1: if we just added a task and asked "Would you like a reminder?",
+            interpret THIS message as the answer to that question before anything else. */
+            if (Session.AwaitingReminderResponse)
+            {
+                string? reminderReply = HandlePendingReminderResponse(input, lowerInput);
+                if (reminderReply != null) return reminderReply;
+                /* null = the user changed the subject; the pending prompt was abandoned inside
+                the helper, so we simply continue with normal processing below. */
+            }
 
             string? extractedName = TryExtractName(lowerInput);
             if (!string.IsNullOrEmpty(extractedName))
@@ -459,6 +500,22 @@ namespace CybersecurityChatbotGUI
                     "Feel free to ask about passwords, phishing, privacy, malware, scams, " +
                     "or any other cybersecurity topic.");
             }
+
+            /* ------------------------------------------------------------------ */
+            /* Part 3: Command / intent routing (Task 3 NLP layer).               */
+            /* Before treating the message as a Part 1 & 2 knowledge question, we  */
+            /* check whether it is actually a command (add a task, set a reminder, */
+            /* start the quiz, show the activity log, ...). Anything that is not a */
+            /* command returns KnowledgeQuery and flows through the original logic */
+            /* below completely unchanged, so Parts 1 & 2 keep working as before.  */
+            /* ------------------------------------------------------------------ */
+            IntentResult intent = _intentRecognizer.Recognize(input);
+            if (intent.Intent != ChatIntent.KnowledgeQuery)
+            {
+                LastHandledIntent = intent.Intent;
+                return HandleIntent(intent);
+            }
+
             if (!string.IsNullOrEmpty(Session.FavoriteTopic) && !Session.HasAcknowledgedInterest)
             {
                 Session.HasAcknowledgedInterest = true;
@@ -531,6 +588,11 @@ namespace CybersecurityChatbotGUI
                 {
                     Session.LastDiscussedTopic = matched.Topic;
 
+                    /* Part 3 / Task 4: record that a cybersecurity topic was discussed so the
+                    activity log reflects knowledge questions, not just task/quiz actions. */
+                    ActivityLog.Log(ActivityCategory.Conversation,
+                        $"Answered a question about '{matched.Topic}'.");
+
                     if (string.IsNullOrEmpty(Session.FavoriteTopic))
                     {
                         /* First cybersecurity topic: save it and confirm to the user (Task 5).
@@ -558,15 +620,426 @@ namespace CybersecurityChatbotGUI
             /* Step 7: Error handling: unrecognised input (Task 7)                */
             /* ------------------------------------------------------------------ */
             string errorName = !string.IsNullOrEmpty(Session.UserName)
-                ? $"Sorry, {Session.UserName}, I"
+                ? $"Sorry {Session.UserName}, I"
                 : "I";
 
+            /* Task 3: keep this rephrase prompt rare AND helpful — instead of a dead end, it
+            reminds the user of everything the bot can do (topics AND commands). */
             return _formatter("",
-                $"{errorName} did not quite understand that. " +
-                "Please try asking about one of these topics: " +
-                "passwords, phishing, privacy, scams, malware, ransomware, " +
-                "firewall, 2FA, VPN, updates, or social engineering. " +
-                "You can also type 'help' for a full list.");
+                $"{errorName} didn't quite catch that — could you rephrase? " +
+                "You can ask me about cybersecurity topics like passwords, phishing, privacy, " +
+                "scams, malware, ransomware, firewalls, 2FA, VPN, updates or social engineering. " +
+                "I can also manage tasks (e.g. \"add task - review my privacy settings\"), " +
+                "set reminders (\"remind me to update my password tomorrow\"), " +
+                "run a quiz (\"start quiz\"), or show your activity log. Type 'help' anytime.");
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* Part 3: Command handler (Tasks 1, 2 and 4).                         */
+        /* Routes a recognised intent to the right behaviour. The Task 1       */
+        /* handlers below now read and write real tasks in MySQL via           */
+        /* TaskRepository, every DB call is wrapped so a database outage shows */
+        /* a friendly message instead of crashing (Task 7), and every action  */
+        /* is recorded in the activity log (Task 4). Task 2's quiz is launched */
+        /* by the GUI (the engine cannot open a window) so StartQuiz only      */
+        /* records the request; MainWindow opens the window via LastHandledIntent. */
+        /* ------------------------------------------------------------------ */
+        private string HandleIntent(IntentResult intent)
+        {
+            switch (intent.Intent)
+            {
+                case ChatIntent.ShowActivityLog:
+                    return HandleShowActivityLog(intent.OriginalInput);
+
+                case ChatIntent.AddTask:
+                    return HandleAddTask(intent);
+
+                case ChatIntent.SetReminder:
+                    return HandleSetReminder(intent);
+
+                case ChatIntent.ShowTasks:
+                    return HandleShowTasks();
+
+                case ChatIntent.CompleteTask:
+                    return HandleCompleteTask(intent);
+
+                case ChatIntent.DeleteTask:
+                    return HandleDeleteTask(intent);
+
+                case ChatIntent.StartQuiz:
+                    /* Task 2 (Part C): the actual quiz window is opened by MainWindow when it
+                    sees LastHandledIntent == StartQuiz. Here we just record the request. */
+                    ActivityLog.Log(ActivityCategory.Quiz, "Requested to start the cybersecurity quiz.");
+                    return _formatter("",
+                        "Get ready! Launching the cybersecurity mini-game for you now. " +
+                        "Answer each question and I'll tally up your score at the end.");
+
+                default:
+                    return _formatter("",
+                        "I recognised that as a command but cannot handle it yet.");
+            }
+        }
+
+        /* ---- Task 4: show the activity log ----
+        Shows the 5 most recent actions by default. If the user asks for the "full"/"all"
+        log, every action is shown (the "show more" option). */
+        private string HandleShowActivityLog(string originalInput)
+        {
+            bool showAll = Regex.IsMatch(originalInput ?? string.Empty,
+                @"\b(all|full|everything|entire|complete|whole)\b", RegexOptions.IgnoreCase);
+
+            /* Build the summary from the actions so far, THEN record that it was viewed (so the
+            "viewed the log" entry doesn't clutter the very summary being shown). */
+            string summary = ActivityLog.GetFormattedLog(showAll ? 0 : 5);
+            ActivityLog.Log(ActivityCategory.System, "Viewed the activity log.");
+            return _formatter("", summary);
+        }
+
+        /* ---- Task 1: add a task (then offer a reminder) ---- */
+        private string HandleAddTask(IntentResult intent)
+        {
+            if (string.IsNullOrWhiteSpace(intent.Detail))
+            {
+                return _formatter("",
+                    "Sure, what task would you like to add? For example: " +
+                    "\"add task - review my privacy settings\".");
+            }
+
+            /* If the user squeezed a timeframe into the same sentence ("add task back up my
+            files tomorrow"), capture it now and keep it out of the title. */
+            bool hasTime = ReminderParser.TryParse(intent.OriginalInput, out DateTime when, out string whenText);
+            string title = CapitaliseFirst(ReminderParser.StripTimePhrases(intent.Detail));
+            if (string.IsNullOrEmpty(title)) title = CapitaliseFirst(intent.Detail);
+
+            string description = BuildTaskDescription(title);
+
+            try
+            {
+                var task = new TaskItem
+                {
+                    Title = title,
+                    Description = description,
+                    CreatedAt = DateTime.Now,
+                    ReminderDate = hasTime ? when : (DateTime?)null
+                };
+
+                _taskRepository.AddTask(task);
+
+                if (hasTime)
+                {
+                    ActivityLog.Log(ActivityCategory.Task,
+                        $"Added task: '{title}' with a reminder {whenText} ({when:yyyy-MM-dd}).");
+                    return _formatter("",
+                        $"Task added: '{title}'. {description} " +
+                        $"I'll also remind you {whenText}.");
+                }
+
+                /* No time given yet: save the task and ask the reminder question (multi-turn). */
+                Session.AwaitingReminderResponse = true;
+                Session.PendingReminderTaskId = task.Id;
+                Session.PendingReminderTaskTitle = title;
+
+                ActivityLog.Log(ActivityCategory.Task, $"Added task: '{title}'.");
+                return _formatter("",
+                    $"Task added: '{title}'. {description} " +
+                    "Would you like to set a reminder for this task? You can say something " +
+                    "like \"remind me in 3 days\", or \"no thanks\".");
+            }
+            catch (Exception ex)
+            {
+                return DatabaseOffline(ex);
+            }
+        }
+
+        /* ---- Task 1: set a standalone reminder (creates a task for it) ---- */
+        private string HandleSetReminder(IntentResult intent)
+        {
+            /* Note: a reminder given as the answer to "Would you like a reminder?" is handled
+            earlier by HandlePendingReminderResponse. This path is for a fresh request such as
+            "remind me to update my password tomorrow". */
+            if (string.IsNullOrWhiteSpace(intent.Detail))
+            {
+                return _formatter("",
+                    "Sure, what should I remind you about? For example: " +
+                    "\"remind me to update my password tomorrow\".");
+            }
+
+            bool hasTime = ReminderParser.TryParse(intent.OriginalInput, out DateTime when, out string whenText);
+            string title = CapitaliseFirst(ReminderParser.StripTimePhrases(intent.Detail));
+            if (string.IsNullOrEmpty(title)) title = CapitaliseFirst(intent.Detail);
+
+            try
+            {
+                var task = new TaskItem
+                {
+                    Title = title,
+                    Description = BuildTaskDescription(title),
+                    CreatedAt = DateTime.Now,
+                    ReminderDate = hasTime ? when : (DateTime?)null
+                };
+
+                _taskRepository.AddTask(task);
+
+                if (hasTime)
+                {
+                    ActivityLog.Log(ActivityCategory.Reminder,
+                        $"Reminder set for '{title}' {whenText} ({when:yyyy-MM-dd}).");
+                    return _formatter("",
+                        $"Reminder set for '{title}' {whenText}. I've added it to your task list.");
+                }
+
+                /* We have the task but no time: ask when, using the same multi-turn flow. */
+                Session.AwaitingReminderResponse = true;
+                Session.PendingReminderTaskId = task.Id;
+                Session.PendingReminderTaskTitle = title;
+
+                ActivityLog.Log(ActivityCategory.Task, $"Added task from a reminder request: '{title}'.");
+                return _formatter("",
+                    $"I've noted '{title}'. When should I remind you? " +
+                    "You can say \"in 3 days\", \"tomorrow\", or \"next week\".");
+            }
+            catch (Exception ex)
+            {
+                return DatabaseOffline(ex);
+            }
+        }
+
+        /* ---- Task 1: view all tasks (the GUI window is opened by MainWindow too) ---- */
+        private string HandleShowTasks()
+        {
+            try
+            {
+                List<TaskItem> tasks = _taskRepository.GetAllTasks();
+                ActivityLog.Log(ActivityCategory.Task, "Viewed all saved tasks.");
+
+                if (tasks.Count == 0)
+                {
+                    return _formatter("",
+                        "You don't have any saved tasks yet. Add one with, for example, " +
+                        "\"add task - review my privacy settings\".");
+                }
+
+                var builder = new StringBuilder();
+                builder.AppendLine($"Here are your saved tasks ({tasks.Count}):");
+
+                int number = 1;
+                foreach (TaskItem task in tasks)
+                {
+                    builder.AppendLine(
+                        $"{number}. {task.Title} — {task.Description} " +
+                        $"[{task.ReminderDisplay} | {task.StatusDisplay}]");
+                    number++;
+                }
+
+                builder.Append("\nI've also opened your Task Manager window so you can " +
+                               "complete or delete tasks.");
+
+                return _formatter("", builder.ToString().TrimEnd());
+            }
+            catch (Exception ex)
+            {
+                return DatabaseOffline(ex);
+            }
+        }
+
+        /* ---- Task 1: mark a task complete ---- */
+        private string HandleCompleteTask(IntentResult intent)
+        {
+            try
+            {
+                List<TaskItem> tasks = _taskRepository.GetAllTasks();
+                TaskItem? match = FindTaskByText(tasks, intent.Detail, preferIncomplete: true);
+
+                if (match == null)
+                {
+                    return _formatter("",
+                        "I couldn't find a matching task to complete. " +
+                        "Type \"show my tasks\" to see them, or use the Task Manager window.");
+                }
+
+                _taskRepository.MarkComplete(match.Id);
+                ActivityLog.Log(ActivityCategory.Task, $"Marked task complete: '{match.Title}'.");
+                return _formatter("", $"Done! I've marked '{match.Title}' as completed. ✓");
+            }
+            catch (Exception ex)
+            {
+                return DatabaseOffline(ex);
+            }
+        }
+
+        /* ---- Task 1: delete a task ---- */
+        private string HandleDeleteTask(IntentResult intent)
+        {
+            try
+            {
+                List<TaskItem> tasks = _taskRepository.GetAllTasks();
+                TaskItem? match = FindTaskByText(tasks, intent.Detail, preferIncomplete: false);
+
+                if (match == null)
+                {
+                    return _formatter("",
+                        "I couldn't find a matching task to delete. " +
+                        "Type \"show my tasks\" to see them, or use the Task Manager window.");
+                }
+
+                _taskRepository.DeleteTask(match.Id);
+                ActivityLog.Log(ActivityCategory.Task, $"Deleted task: '{match.Title}'.");
+                return _formatter("", $"Removed '{match.Title}' from your task list. 🗑");
+            }
+            catch (Exception ex)
+            {
+                return DatabaseOffline(ex);
+            }
+        }
+
+        /* ------------------------------------------------------------------ */
+        /* Part 3 / Task 1: multi-turn reminder follow-up.                     */
+        /* Called when the bot has just asked "Would you like a reminder?".    */
+        /* Returns the reply, or null if the user clearly changed the subject  */
+        /* (in which case the pending prompt is abandoned and normal           */
+        /* processing resumes).                                                */
+        /* ------------------------------------------------------------------ */
+        private string? HandlePendingReminderResponse(string input, string lowerInput)
+        {
+            string[] tokens = lowerInput.Split(
+                new[] { ' ', '.', '!', '?', ',', ';', ':' },
+                StringSplitOptions.RemoveEmptyEntries);
+
+            bool HasWord(params string[] options) => tokens.Any(options.Contains);
+
+            string title = Session.PendingReminderTaskTitle;
+
+            /* 1. A concrete time was given ("in 3 days", "tomorrow", ...): store it. */
+            if (ReminderParser.TryParse(input, out DateTime when, out string whenText))
+            {
+                try
+                {
+                    _taskRepository.SetReminder(Session.PendingReminderTaskId, when);
+                    ActivityLog.Log(ActivityCategory.Reminder,
+                        $"Set reminder for '{title}' {whenText} ({when:yyyy-MM-dd}).");
+                    ClearPendingReminder();
+                    return _formatter("", $"Got it! I'll remind you {whenText} about '{title}'.");
+                }
+                catch (Exception ex)
+                {
+                    ClearPendingReminder();
+                    return DatabaseOffline(ex);
+                }
+            }
+
+            /* 2. The user declined the reminder. */
+            bool declined = HasWord("no", "nope", "nah", "later", "skip")
+                            || lowerInput.Contains("not now")
+                            || lowerInput.Contains("no thanks")
+                            || lowerInput.Contains("don't")
+                            || lowerInput.Contains("dont");
+            if (declined)
+            {
+                ActivityLog.Log(ActivityCategory.Reminder, $"Declined a reminder for '{title}'.");
+                ClearPendingReminder();
+                return _formatter("",
+                    $"No problem — I won't set a reminder for '{title}'. " +
+                    "It's saved in your task list. Anything else I can help with?");
+            }
+
+            /* 3. The user wants a reminder but hasn't said when: ask for the time, keep waiting. */
+            bool wantsReminder = HasWord("yes", "yeah", "yep", "yup", "sure", "ok", "okay", "please")
+                                 || lowerInput.Contains("remind")
+                                 || lowerInput.Contains("go ahead");
+            if (wantsReminder)
+            {
+                return _formatter("",
+                    "Great! When should I remind you? " +
+                    "You can say \"in 3 days\", \"tomorrow\", or \"next week\".");
+            }
+
+            /* 4. Unrelated message: abandon the reminder prompt and let normal handling run. */
+            ClearPendingReminder();
+            return null;
+        }
+
+        /* Resets the pending-reminder state once the question has been resolved. */
+        private void ClearPendingReminder()
+        {
+            Session.AwaitingReminderResponse = false;
+            Session.PendingReminderTaskId = 0;
+            Session.PendingReminderTaskTitle = string.Empty;
+        }
+
+        /* Finds the task that best matches the user's words. If they named part of a title
+        ("complete the privacy task"), match on that; otherwise, if there is exactly one
+        sensible candidate, use it. Returns null when the choice is ambiguous. */
+        private static TaskItem? FindTaskByText(List<TaskItem> tasks, string detail, bool preferIncomplete)
+        {
+            if (tasks.Count == 0) return null;
+
+            IEnumerable<TaskItem> pool = preferIncomplete
+                ? tasks.Where(t => !t.IsCompleted)
+                : tasks;
+            List<TaskItem> candidates = pool.ToList();
+            if (candidates.Count == 0) candidates = tasks;
+
+            string needle = (detail ?? string.Empty)
+                .ToLowerInvariant()
+                .Replace("task", string.Empty)
+                .Trim();
+
+            if (!string.IsNullOrEmpty(needle))
+            {
+                TaskItem? byTitle = candidates.FirstOrDefault(
+                    t => t.Title.ToLowerInvariant().Contains(needle));
+                if (byTitle != null) return byTitle;
+            }
+
+            /* No usable text but only one obvious task — act on it. */
+            return candidates.Count == 1 ? candidates[0] : null;
+        }
+
+        /* Builds a friendly, topic-aware description from a task title so each task has a
+        meaningful Description field (not just a copy of the title), matching the brief's
+        example where "Review privacy settings" becomes a fuller sentence. */
+        private static string BuildTaskDescription(string title)
+        {
+            string t = title.ToLowerInvariant();
+
+            if (t.Contains("privacy"))
+                return "Review your account privacy settings to ensure your personal data is protected.";
+            if (t.Contains("password") || t.Contains("passphrase"))
+                return "Update to a strong, unique passphrase to keep your account secure.";
+            if (t.Contains("2fa") || t.Contains("two factor") || t.Contains("two-factor")
+                || t.Contains("authentication"))
+                return "Enable two-factor authentication to add a second layer of protection to your account.";
+            if (t.Contains("backup") || t.Contains("back up"))
+                return "Back up your important files to a safe, offline location to guard against ransomware.";
+            if (t.Contains("update") || t.Contains("patch"))
+                return "Install the latest software and security updates to patch known vulnerabilities.";
+            if (t.Contains("antivirus") || t.Contains("malware") || t.Contains("scan"))
+                return "Run an antivirus scan and keep your security software up to date.";
+            if (t.Contains("phishing") || t.Contains("email"))
+                return "Stay alert for phishing emails and verify senders before clicking any links.";
+            if (t.Contains("vpn") || t.Contains("wifi") || t.Contains("wi-fi"))
+                return "Use a reputable VPN, especially on public Wi-Fi, to encrypt your connection.";
+            if (t.Contains("firewall"))
+                return "Make sure your firewall is switched on to block unauthorised network access.";
+
+            return $"Cybersecurity task: {title}. Complete this to help keep your digital life secure.";
+        }
+
+        /* Capitalises the first character of a string (used to tidy task titles). */
+        private static string CapitaliseFirst(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return text;
+            return char.ToUpper(text[0]) + text.Substring(1);
+        }
+
+        /* Friendly, non-crashing message shown when MySQL cannot be reached (Task 7). The
+        technical detail goes to the activity log, not to the user. */
+        private string DatabaseOffline(Exception ex)
+        {
+            ActivityLog.Log(ActivityCategory.System, "Database operation failed: " + ex.Message);
+            return _formatter("",
+                "I'm sorry, I couldn't reach the task database just now, so that wasn't saved. " +
+                "Please make sure your MySQL server is running, then try again.");
         }
 
         /* Called by the GUI on startup (shown after ASCII art and voice greeting).

@@ -93,12 +93,15 @@
         </Border>
 
         <StackPanel Grid.Row="3">
-            <StackPanel Orientation="Horizontal" Margin="2,0,0,10" HorizontalAlignment="Left">
+            <WrapPanel Margin="2,0,0,10" HorizontalAlignment="Left">
                 <Button Style="{StaticResource SuggestionChipBtn}" Content="🔑  Passwords" Click="QuickTopic_Click"/>
                 <Button Style="{StaticResource SuggestionChipBtn}" Content="🎣  Phishing" Click="QuickTopic_Click"/>
                 <Button Style="{StaticResource SuggestionChipBtn}" Content="👁️  Privacy" Click="QuickTopic_Click"/>
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="📋  My Tasks" Click="OpenTaskManager_Click"/>
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="🎮  Quiz" Click="OpenQuiz_Click"/>
+                <Button Style="{StaticResource SuggestionChipBtn}" Content="📜  Activity Log" Click="OpenActivityLog_Click"/>
                 <Button Style="{StaticResource SuggestionChipBtn}" Content="❓  Help" Click="QuickTopic_Click"/>
-            </StackPanel>
+            </WrapPanel>
 
             <Grid>
                 <Grid.ColumnDefinitions>

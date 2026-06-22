@@ -149,6 +149,8 @@ namespace CybersecurityChatbotGUI
             {
                 _engine.Session.UserName = FormatName(rawInputText);
                 _engine.Session.IsGreetingComplete = true;
+                _engine.ActivityLog.Log(ActivityCategory.Session,
+                    $"User introduced themselves as {_engine.Session.UserName}.");
 
                 string personalizedIntroString = $"Welcome, {_engine.Session.UserName}! Great to meet you. " +
                     "I will remember your name throughout our conversation. " +
@@ -163,6 +165,53 @@ namespace CybersecurityChatbotGUI
             /* Step 2: Route core questions to backend processing blocks */
             string internalEngineResultResponse = _engine.ProcessUserInput(rawInputText);
             await StreamTypewriterBotOutputAsync(internalEngineResultResponse);
+
+            /* Part 3 / Task 1: when the user asks to see their tasks in chat, also open the
+            graphical Task Manager so they can complete or delete tasks with buttons. */
+            if (_engine.LastHandledIntent == ChatIntent.ShowTasks)
+                OpenTaskManagerWindow();
+
+            /* Part 3 / Task 2: when the user asks to play, launch the quiz window. */
+            if (_engine.LastHandledIntent == ChatIntent.StartQuiz)
+                OpenQuizWindow();
+        }
+
+        /* Part 3 / Task 2: opens the quiz window, sharing the engine's ActivityLogger so quiz
+        attempts are recorded in the activity log. */
+        private void OpenQuizWindow()
+        {
+            var window = new QuizWindow(_engine.ActivityLog) { Owner = this };
+            window.ShowDialog();
+        }
+
+        /* "🎮 Quiz" suggestion-chip handler. */
+        private void OpenQuiz_Click(object sender, RoutedEventArgs e)
+        {
+            _engine.ActivityLog.Log(ActivityCategory.Quiz, "Opened the quiz from the menu.");
+            OpenQuizWindow();
+        }
+
+        /* Part 3 / Task 4: "📜 Activity Log" chip — opens the graphical activity-log view.
+        (The same log is also available in chat via "show activity log".) */
+        private void OpenActivityLog_Click(object sender, RoutedEventArgs e)
+        {
+            _engine.ActivityLog.Log(ActivityCategory.System, "Opened the activity log.");
+            var window = new ActivityLogWindow(_engine.ActivityLog) { Owner = this };
+            window.ShowDialog();
+        }
+
+        /* Part 3 / Task 1: opens the Task Manager window, sharing the engine's single
+        TaskRepository and ActivityLogger so the GUI and the chat stay perfectly in sync. */
+        private void OpenTaskManagerWindow()
+        {
+            var window = new TaskManagerWindow(_engine.Tasks, _engine.ActivityLog) { Owner = this };
+            window.ShowDialog();
+        }
+
+        /* "📋 My Tasks" suggestion-chip handler. */
+        private void OpenTaskManager_Click(object sender, RoutedEventArgs e)
+        {
+            OpenTaskManagerWindow();
         }
 
         /* Routes the mouse click event context into the submission pipeline logic safely using async/await standard patterns. */

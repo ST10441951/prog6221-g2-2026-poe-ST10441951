@@ -29,9 +29,24 @@
         */
         public string LastDiscussedTopic { get; set; } = string.Empty;
 
-        /* A simple boolean flag so the bot knows the initial name-capture phase is done. 
+        /* A simple boolean flag so the bot knows the initial name-capture phase is done.
         This stops the bot from asking for the user's name every time they send a message.
         */
         public bool IsGreetingComplete { get; set; } = false;
+
+        /* ---------------------------------------------------------------------------------- */
+        /* Part 3 / Task 1: state for the multi-turn "add a task, then offer a reminder" flow. */
+        /* After a task is added the bot asks "Would you like a reminder?" and waits; these     */
+        /* fields remember WHICH task that reminder should attach to when the user replies.     */
+        /* ---------------------------------------------------------------------------------- */
+
+        /* True while the bot is waiting for the user to answer the reminder question. */
+        public bool AwaitingReminderResponse { get; set; } = false;
+
+        /* The database Id of the task the pending reminder will be attached to. */
+        public int PendingReminderTaskId { get; set; } = 0;
+
+        /* The title of that task, kept so the confirmation message can name it. */
+        public string PendingReminderTaskTitle { get; set; } = string.Empty;
     }
 }

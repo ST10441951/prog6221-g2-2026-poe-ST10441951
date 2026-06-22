@@ -15,4 +15,9 @@
 		</None>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <!-- Part 3 / Task 1: official MySQL connector for the task storage database. -->
+	  <PackageReference Include="MySql.Data" Version="9.7.0" />
+	</ItemGroup>
+
 </Project>
