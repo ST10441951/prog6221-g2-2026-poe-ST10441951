@@ -25,7 +25,7 @@ namespace CybersecurityChatbotGUI
         sensible default for a standard local MySQL install instead of throwing. */
         private const string FallbackConnectionString =
             "server=localhost;port=3306;uid=root;pwd=;database=cyber_chatbot;" +
-            "SslMode=None;AllowPublicKeyRetrieval=true;";
+            "SslMode=Disabled;AllowPublicKeyRetrieval=true;";
 
         /* Reads the connection string from App.config, falling back to the default above. */
         public static string ConnectionString

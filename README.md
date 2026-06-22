@@ -62,7 +62,7 @@ password in the connection string:
 
 ```xml
 <add name="CyberChatbotDb"
-     connectionString="server=localhost;port=3306;uid=root;pwd=YOUR_PASSWORD;database=cyber_chatbot;SslMode=None;AllowPublicKeyRetrieval=true;"
+     connectionString="server=localhost;port=3306;uid=root;pwd=YOUR_PASSWORD;database=cyber_chatbot;SslMode=Disabled;AllowPublicKeyRetrieval=true;"
      providerName="MySql.Data.MySqlClient" />
 ```
 
