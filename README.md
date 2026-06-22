@@ -1,72 +1,133 @@
-# Cybersecurity Awareness Chatbot (Part 2 — WPF GUI)
+# Cybersecurity Awareness Chatbot (PROG6221 POE)
 
-* **Course:** PROG6221 - Portfolio of Evidence (Part 2)
+* **Course:** PROG6221 - Portfolio of Evidence
 * **Student Name:** Joshua Marc Lourens
 * **Student Number:** ST10441951
 * **YouTube Presentation:** https://youtu.be/WnkHFbt8Sw0
 * **GitHub Repository:** https://github.com/ST10441951/prog6221-g2-2026-poe-ST10441951
 
+> **Note:** If you have recorded a new walkthrough for Part 3, replace the YouTube link above with the new one.
+
 ---
 
 ## 📝 Project Overview
-This application is a sophisticated **Windows Presentation Foundation (WPF)** chatbot designed to educate users on cybersecurity threats and best practices. Building upon the core logic established in Part 1, this version introduces a high-performance Graphical User Interface, enhanced conversational flow, and advanced features such as **Fuzzy Matching**, **Empathetic Sentiment Detection**, and **Session-based Memory**.
+A **Windows Presentation Foundation (WPF, .NET 10)** desktop chatbot that teaches cybersecurity
+awareness. It began (Parts 1 & 2) as a conversational assistant with a knowledge base, sentiment
+detection and memory, and in **Part 3** it gains a **task assistant backed by MySQL**, an
+interactive **quiz mini-game**, a simple **NLP** understanding layer, and an **activity log**.
 
-The bot is engineered to recognize 13 distinct cybersecurity topics, providing informative, randomized guidance to ensure a dynamic learning experience.
+The repository contains both the original console build (`CybersecurityChatbot/`) and the final
+WPF GUI application (`CybersecurityChatbotGUI/`), which is the one to mark for Part 3.
 
 ---
 
-## 🚀 Key Features (POE Task Mapping)
+## 🚀 Feature / Task Mapping
 
-### ✅ Task 1: Professional GUI Implementation
-* A custom-styled WPF interface with dedicated input and output sections.
-* Integration of **Part 1 Multimedia**: Plays a `greeting.wav` voice greeting on startup and displays custom ASCII Art in the chat window.
+### Parts 1 & 2 (foundation, still fully working)
+* **Knowledge base** of 13 cybersecurity topics, each with multiple randomized responses.
+* **Fuzzy matching** (Levenshtein distance) for typo tolerance (e.g. "pasword").
+* **Sentiment detection** (8 emotions) with empathetic, auto-tip responses for distress.
+* **Memory & recall** of the user's name and favourite topic.
+* **Multimedia GUI** — voice greeting, animated ASCII boot art, typewriter streaming, chat bubbles.
 
-### ✅ Task 2 & 3: Intelligent Knowledge Base
-* Recognition for **13 keywords** (Exceeding the rubric requirement of 3).
-* **Randomized Responses:** Every topic features a list of 5+ unique tips, ensuring the conversation remains engaging and informative.
-
-### ✅ Task 4: Seamless Conversation Flow
-* Logic to handle natural follow-up statements such as *"Tell me more"*, *"Explain further"*, or *"Another tip"*, allowing the bot to maintain context without resetting.
-
-### ✅ Task 5: Memory and Recall
-* **Name Extraction:** Captures the user's name during greeting.
-* **Recall Logic:** Remembers the user's favorite cybersecurity topic and explicitly refers back to it later in the session to personalize guidance.
-
-### ✅ Task 6: Advanced Sentiment Detection
-* Detects **8 emotions** (Worried, Scared, Curious, Frustrated, etc.).
-* **Distress Response:** If a "worried" or "anxious" sentiment is detected, the bot automatically adjusts its tone to be empathetic and provides an immediate, relevant safety tip without being asked.
-
-### ✅ Task 7 & 8: Optimization & Robustness
-* **Fuzzy Matching (Levenshtein Distance):** Typo tolerance logic that allows the bot to understand keywords even if misspelled (e.g., "pasword").
-* **Technical Excellence:** Utilizes **Delegates**, **Dictionaries**, and **LINQ** to ensure high performance and clean, modular code.
+### Part 3
+| Task | Feature | Highlights |
+|------|---------|------------|
+| **Task 1** | **Task Assistant + Reminders (GUI)** | Add tasks with title, description and optional reminder ("remind me in 3 days"); view/complete/delete in a dedicated **Task Manager** window. |
+| **Task 1** | **MySQL Database Integration** | Tasks stored in MySQL; full **CRUD** (add / read / mark complete / delete) syncs between GUI and DB, with graceful error handling if the DB is offline. |
+| **Task 2** | **Cybersecurity Quiz** | 13 questions (multiple-choice **and** true/false), one at a time, instant feedback + explanations, live score and a score-based final message. |
+| **Task 3** | **NLP Simulation** | Recognises commands worded many ways via text normalisation, keyword/synonym detection and regex (e.g. "Can you remind me to update my password?"). |
+| **Task 4** | **Activity Log** | Timestamped record of key actions (tasks, reminders, quiz attempts, conversations); shows the recent 5 with a "show full log" option, plus a dedicated **Activity Log** window. |
 
 ---
 
 ## 🛠️ Technical Stack
-* **Language:** C# (.NET 10 LTS)
-* **Framework:** WPF (XAML)
-* **Design Patterns:** Object-Oriented Programming (OOP) with a decoupled engine logic.
-* **Optimization:** Dictionary-based lookups (O(1) complexity) for sentiment and keyword mapping.
-
----
-
-## ✅ Continuous Integration (CI)
-This repository utilizes **GitHub Actions** to automatically verify build success and code integrity on every push.
+* **Language:** C# (.NET 10)
+* **UI:** WPF (XAML) with data binding
+* **Database:** MySQL via the official `MySql.Data` NuGet package
+* **Design:** Object-oriented, decoupled engine / data / UI layers; `Dictionary` lookups,
+  `List<T>` collections, delegates, LINQ and regular expressions.
 
 ---
 
 ## 📥 Setup and Installation
-1. **Clone** the repository to your local drive.
-2. Open the solution file `CybersecurityChatbotGUI.slnx` (or `.sln`) in **Visual Studio 2022**.
-3. Ensure the `greeting.wav` file is in the `Sounds` folder.
-4. Set the `greeting.wav` file properties to **Copy to Output Directory: Copy if newer**.
-5. Build and Run (**F5**).
+
+### 1. Prerequisites
+* **.NET 10 SDK** (the GUI targets `net10.0-windows`).
+* **MySQL Server** running locally (tested with MySQL 9.4). Note your `root` password.
+* **Visual Studio 2026** (or `dotnet` CLI).
+
+### 2. Configure the database (Part 3)
+Open `CybersecurityChatbotGUI/CybersecurityChatbotGUI/App.config` and set your MySQL `root`
+password in the connection string:
+
+```xml
+<add name="CyberChatbotDb"
+     connectionString="server=localhost;port=3306;uid=root;pwd=YOUR_PASSWORD;database=cyber_chatbot;SslMode=None;AllowPublicKeyRetrieval=true;"
+     providerName="MySql.Data.MySqlClient" />
+```
+
+* Only `pwd=` normally needs changing.
+* **You do not need to create the database or tables** — the app creates the `cyber_chatbot`
+  database and `tasks` table automatically on first run.
+
+### 3. Run
+Open `CybersecurityChatbotGUI/CybersecurityChatbotGUI.slnx` in Visual Studio and press **F5**,
+or from the command line:
+
+```bash
+dotnet run --project CybersecurityChatbotGUI/CybersecurityChatbotGUI/CybersecurityChatbotGUI.csproj
+```
 
 ---
 
-## 📂 Project Structure
-* `ChatbotEngine.cs` - Core logic for sentiment, keywords, and fuzzy matching.
-* `MainWindow.xaml / .cs` - GUI design and multimedia event handling.
-* `SessionContext.cs` - State management for user name and favorite topics.
-* `ChatbotResponse.cs` - Data model for keyword response pools.
-* `BotInterface.cs` - Helper class for ASCII art and UI formatting.
+## 💬 Usage Examples
+
+After greeting the bot and giving your name, try these (type in chat, or use the quick chips:
+🔑 Passwords · 🎣 Phishing · 👁️ Privacy · 📋 My Tasks · 🎮 Quiz · 📜 Activity Log · ❓ Help):
+
+```
+what is phishing?
+add task - review my privacy settings        → bot asks if you want a reminder
+remind me in 3 days                          → reminder saved to MySQL
+add a task to enable two-factor authentication
+show my tasks                                → opens the Task Manager window
+start quiz                                    → opens the quiz mini-game
+remind me to update my password tomorrow      → NLP understands varied phrasing
+what have you done for me?                    → recent activity (say "show full log" for all)
+```
+
+---
+
+## 📂 Project Structure (GUI — Part 3)
+
+```
+CybersecurityChatbotGUI/CybersecurityChatbotGUI/
+├─ App.config                 # MySQL connection string (edit pwd here)
+├─ MainWindow.xaml(.cs)       # Chat UI + quick-access chips
+├─ ChatbotEngine.cs           # Knowledge, sentiment, memory + command routing
+├─ IntentRecognizer.cs        # Task 3 — NLP layer (normalise + keyword/synonym + regex)
+├─ ChatbotResponse.cs / ChatMessage.cs / SessionContext.cs / BotInterface.cs
+│
+├─ DatabaseConfig.cs          # Task 1 — central MySQL connection helper
+├─ TaskItem.cs / ReminderParser.cs / TaskRepository.cs   # Task 1 — model, parsing, CRUD
+├─ TaskManagerWindow.xaml(.cs)# Task 1 — view/add/complete/delete tasks
+│
+├─ QuizQuestion.cs / QuizGame.cs / QuizWindow.xaml(.cs)  # Task 2 — quiz
+│
+└─ ActivityLogger.cs / ActivityLogWindow.xaml(.cs)       # Task 4 — activity log
+```
+
+---
+
+## ✅ Continuous Integration
+This repository uses **GitHub Actions** to build the project on every push.
+
+---
+
+## 🛠️ Troubleshooting
+| Symptom | Fix |
+|--------|-----|
+| In-app: *"I couldn't reach the task database"* | Check `pwd` in `App.config` and that your MySQL service is running. The app won't crash — it degrades gracefully. |
+| `Access denied for user 'root'` | Wrong password in `App.config`. |
+| Quiz / chat / log work but tasks don't | That's the DB connection only — everything else works without MySQL. |
